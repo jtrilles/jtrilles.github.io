@@ -1,0 +1,931 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Joseph Trilles — AI Engineer & Operator</title>
+<meta name="description" content="Joseph Trilles builds autonomous AI agent ecosystems, automation pipelines, and knowledge workflows from Legazpi City, Philippines." />
+<meta name="theme-color" content="#060606" />
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+tailwind.config={
+  theme:{
+    extend:{
+      fontFamily:{
+        mono:['JetBrains Mono','SF Mono','monospace'],
+        sans:['Inter','system-ui','sans-serif']
+      },
+      colors:{
+        dark:{
+          50:'#e8e8e8',100:'#b0b0b0',200:'#888888',300:'#686868',
+          400:'#484848',500:'#282828',600:'#181818',
+          700:'#101010',800:'#0a0a0a',900:'#060606',950:'#030303'
+        },
+        ice:{DEFAULT:'#7dd3fc',50:'#e0f2fe',100:'#bae6fd',200:'#7dd3fc',
+             300:'#38bdf8',400:'#0ea5e9',500:'#0284c7'}
+      }
+    }
+  }
+}
+</script>
+<style>
+/* ── Reset & Base ── */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  background:#060606;color:#d0d0d0;
+  font-family:'JetBrains Mono','SF Mono',monospace;
+  font-size:13px;line-height:1.6;
+  overflow-x:hidden;
+  -webkit-font-smoothing:antialiased;
+}
+::selection{background:rgba(125,211,252,0.2);color:#fff}
+::-webkit-scrollbar{width:3px}
+::-webkit-scrollbar-track{background:#0a0a0a}
+::-webkit-scrollbar-thumb{background:#282828;border-radius:2px}
+
+/* ── Utility Classes ── */
+.flex-center{display:flex;align-items:center;justify-content:center}
+
+/* ── Grid Background (Layer 1: spatial depth) ── */
+.grid-bg{
+  position:fixed;inset:0;pointer-events:none;z-index:0;
+  background-image:
+    linear-gradient(rgba(125,211,252,0.025)1px,transparent 1px),
+    linear-gradient(90deg,rgba(125,211,252,0.025)1px,transparent 1px);
+  background-size:48px 48px;
+}
+
+/* ── Subtle Radial Glow Spot (Layer 1: atmosphere) ── */
+.glow-spot{
+  position:fixed;top:-30vh;right:-20vw;
+  width:80vw;height:80vw;
+  background:radial-gradient(circle,rgba(125,211,252,0.04) 0%,transparent 70%);
+  pointer-events:none;z-index:0;
+}
+
+/* ── Double-Bezel Cards (Layer 2: high-end-visual-design) ── */
+.card-outer{
+  background:rgba(16,16,16,0.5);
+  border:1px solid rgba(255,255,255,0.04);
+  padding:1.5px;
+  border-radius:1rem;
+  transition:border-color 0.4s cubic-bezier(0.22,1,0.36,1);
+}
+.card-outer:hover{border-color:rgba(125,211,252,0.12)}
+.card-inner{
+  background:rgba(10,10,10,0.6);
+  backdrop-filter:blur(8px);
+  border-radius:calc(1rem - 1.5px);
+  padding:1.25rem;
+  height:100%;
+}
+.card{
+  background:rgba(16,16,16,0.6);
+  backdrop-filter:blur(8px);
+  border:1px solid rgba(125,211,252,0.05);
+  border-radius:0.75rem;
+  padding:1.25rem;
+  transition:all 0.4s cubic-bezier(0.22,1,0.36,1);
+}
+.card:hover{
+  border-color:rgba(125,211,252,0.12);
+  background:rgba(20,20,20,0.7);
+}
+.card-accent{border-left:2px solid rgba(125,211,252,0.12)}
+.card-accent:hover{border-left-color:rgba(125,211,252,0.35)}
+
+/* ── Tags (Layer 1: refined) ── */
+.tag{
+  display:inline-flex;padding:1px 8px;
+  border:1px solid rgba(125,211,252,0.08);
+  background:rgba(125,211,252,0.02);
+  color:#7dd3cc;font-size:9px;
+  letter-spacing:0.04em;text-transform:uppercase;
+  line-height:1.8;border-radius:2px;
+  transition:all 0.25s;
+}
+.tag:hover{background:rgba(125,211,252,0.06);border-color:rgba(125,211,252,0.14)}
+
+/* ── Section Label ── */
+.section-label{
+  font-size:9px;letter-spacing:0.22em;text-transform:uppercase;
+  color:rgba(125,211,252,0.3);
+  display:flex;align-items:center;gap:8px;
+}
+.section-label::after{
+  content:'';flex:1;height:1px;
+  background:linear-gradient(90deg,rgba(125,211,252,0.08),transparent);
+}
+
+/* ── Skill Bars (Layer 3: animated) ── */
+.skill-bar-track{
+  height:2px;background:rgba(125,211,252,0.04);
+  border-radius:2px;overflow:hidden;position:relative;
+}
+.skill-bar-fill{
+  height:100%;
+  background:linear-gradient(90deg,#7dd3fc,transparent 80%);
+  border-radius:2px;
+  width:0;
+  transition:width 1.2s cubic-bezier(0.22,1,0.36,1);
+}
+
+/* ── Terminal Cursor ── */
+.terminal-cursor::after{
+  content:'_';
+  animation:blink 1s step-end infinite;
+  color:#7dd3fc;font-weight:300;
+}
+@keyframes blink{50%{opacity:0}}
+
+/* ── Stat Numbers ── */
+.stat-number{
+  font-size:clamp(1.5rem,4vw,2.2rem);
+  font-weight:700;color:#7dd3fc;
+  line-height:1;font-variant-numeric:tabular-nums;
+}
+
+/* ── Timeline Line ── */
+.timeline-dot{
+  width:6px;height:6px;
+  border-radius:50%;
+  background:rgba(125,211,252,0.15);
+  border:1px solid rgba(125,211,252,0.4);
+  flex-shrink:0;
+  position:relative;
+  z-index:2;
+}
+.timeline-line{
+  width:1px;flex:1;
+  background:linear-gradient(to bottom,rgba(125,211,252,0.12),transparent);
+  margin-left:2.5px;
+}
+
+/* ── Project Card (Bento) ── */
+.project-card{
+  background:rgba(16,16,16,0.5);
+  border:1px solid rgba(255,255,255,0.04);
+  border-radius:0.75rem;
+  padding:1.5px;
+  transition:all 0.4s cubic-bezier(0.22,1,0.36,1);
+  position:relative;overflow:hidden;
+}
+.project-card::before{
+  content:'';position:absolute;inset:0;
+  border-radius:0.75rem;
+  opacity:0;transition:opacity 0.4s;
+  background:linear-gradient(135deg,rgba(125,211,252,0.03),transparent 50%);
+  pointer-events:none;
+}
+.project-card:hover::before{opacity:1}
+.project-card:hover{border-color:rgba(125,211,252,0.1)}
+.project-inner{
+  background:rgba(10,10,10,0.7);
+  backdrop-filter:blur(12px);
+  border-radius:calc(0.75rem - 1.5px);
+  padding:1.25rem;
+  height:100%;
+  display:flex;flex-direction:column;justify-content:space-between;
+  position:relative;z-index:1;
+}
+
+/* ── Project Hover Glow ── */
+.project-glow{
+  position:absolute;top:50%;left:50%;
+  width:200px;height:200px;
+  border-radius:50%;
+  background:radial-gradient(circle,rgba(125,211,252,0.03),transparent 70%);
+  transform:translate(-50%,-50%);
+  opacity:0;transition:opacity 0.4s;
+  pointer-events:none;z-index:0;
+}
+.project-card:hover .project-glow{opacity:1}
+
+/* ── Nav (Layer 2: fluid island) ── */
+.nav-island{
+  position:fixed;top:12px;left:50%;transform:translateX(-50%);
+  z-index:100;
+  background:rgba(6,6,6,0.7);
+  backdrop-filter:blur(20px);
+  -webkit-backdrop-filter:blur(20px);
+  border:1px solid rgba(255,255,255,0.06);
+  border-radius:999px;
+  padding:4px 6px;
+  transition:border-color 0.3s;
+}
+.nav-island:hover{border-color:rgba(125,211,252,0.1)}
+.nav-link{
+  padding:5px 12px;
+  font-size:10px;letter-spacing:0.06em;
+  color:#888;text-decoration:none;
+  border-radius:999px;
+  transition:all 0.25s cubic-bezier(0.22,1,0.36,1);
+  white-space:nowrap;
+}
+.nav-link:hover{color:#7dd3fc;background:rgba(125,211,252,0.06)}
+
+/* ── Button-in-Button (Layer 2: high-end detail) ── */
+.btn-primary{
+  display:inline-flex;align-items:center;gap:8px;
+  padding:10px 20px;
+  background:rgba(125,211,252,0.08);
+  border:1px solid rgba(125,211,252,0.15);
+  border-radius:999px;
+  color:#7dd3fc;font-size:11px;font-family:'JetBrains Mono',monospace;
+  text-decoration:none;text-transform:uppercase;letter-spacing:0.08em;
+  transition:all 0.3s cubic-bezier(0.22,1,0.36,1);
+  cursor:pointer;
+}
+.btn-primary:hover{
+  background:rgba(125,211,252,0.15);
+  border-color:rgba(125,211,252,0.3);
+  transform:translateY(-1px);
+}
+.btn-primary:active{transform:scale(0.97)}
+.btn-icon-wrap{
+  width:22px;height:22px;
+  border-radius:50%;
+  background:rgba(125,211,252,0.12);
+  display:flex;align-items:center;justify-content:center;
+  font-size:10px;flex-shrink:0;
+  transition:transform 0.3s;
+}
+.btn-primary:hover .btn-icon-wrap{transform:translateX(2px) translateY(-1px)}
+
+.btn-secondary{
+  display:inline-flex;align-items:center;
+  padding:10px 20px;
+  border:1px solid rgba(255,255,255,0.06);
+  border-radius:999px;
+  color:#888;font-size:11px;font-family:'JetBrains Mono',monospace;
+  text-decoration:none;text-transform:uppercase;letter-spacing:0.08em;
+  transition:all 0.3s cubic-bezier(0.22,1,0.36,1);
+  cursor:pointer;
+}
+.btn-secondary:hover{
+  border-color:rgba(125,211,252,0.2);
+  color:#7dd3fc;
+}
+
+/* ── Tech Grid Items (Layer 3: interactive) ── */
+.tech-item{
+  display:flex;align-items:center;gap:8px;
+  padding:8px 12px;
+  border:1px solid rgba(255,255,255,0.04);
+  border-radius:6px;
+  background:rgba(255,255,255,0.02);
+  font-size:10px;color:#888;
+  transition:all 0.3s cubic-bezier(0.22,1,0.36,1);
+}
+.tech-item:hover{
+  border-color:rgba(125,211,252,0.1);
+  background:rgba(125,211,252,0.03);
+  color:#b0b0b0;
+}
+.tech-dot{
+  width:4px;height:4px;border-radius:50%;
+  background:rgba(125,211,252,0.3);flex-shrink:0;
+}
+
+/* ── Footer Divider ── */
+.footer-divider{
+  border:none;height:1px;
+  background:linear-gradient(90deg,transparent,rgba(125,211,252,0.05),transparent);
+}
+
+/* ── Reduced Motion ── */
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{
+    animation-duration:0.01ms!important;
+    animation-iteration-count:1!important;
+    transition-duration:0.01ms!important;
+  }
+  html{scroll-behavior:auto}
+}
+
+/* ── Responsive ── */
+@media(max-width:640px){
+  .nav-island{top:8px;padding:3px 4px}
+  .nav-link{padding:4px 8px;font-size:9px}
+}
+</style>
+</head>
+<body>
+
+<!-- Grid Background (Layer 1: atmosphere) -->
+<div class="grid-bg" aria-hidden="true"></div>
+<div class="glow-spot" aria-hidden="true"></div>
+
+<!-- Skip Link (Layer 3: accessibility) -->
+<a href="#main" class="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-[200] focus:px-4 focus:py-2 focus:bg-ice focus:text-black focus:text-xs focus:rounded">Skip to main content</a>
+
+<!-- ═══ NAV — Fluid Island (Layer 2: high-end) ═══ -->
+<nav class="nav-island" role="navigation" aria-label="Primary navigation">
+  <div class="flex items-center gap-0.5">
+    <span class="text-[9px] text-ice/30 tracking-[0.15em] px-2 hidden sm:block">JT</span>
+    <a href="#about" class="nav-link nav-lnk" data-section="about">About</a>
+    <a href="#work" class="nav-link nav-lnk" data-section="work">Work</a>
+    <a href="#stack" class="nav-link nav-lnk" data-section="stack">Stack</a>
+    <a href="#contact" class="nav-link nav-lnk" data-section="contact">Contact</a>
+  </div>
+</nav>
+
+<!-- ═══ MAIN ═══ -->
+<main id="main" class="relative z-10">
+
+<!-- ═══ HERO (Layer 1 + Layer 2: spatial + motion) ═══ -->
+<section class="pt-24 pb-14 px-4" aria-label="Introduction">
+  <div class="max-w-4xl mx-auto">
+    <div class="flex items-center gap-2 text-[10px] text-dark-400 tracking-[0.12em] mb-4 hero-line">
+      <span class="w-6 h-px bg-ice/20"></span>
+      <span>Legazpi City, PH · UTC+8</span>
+    </div>
+
+    <h1 class="text-[clamp(2.6rem,6vw,5rem)] font-extrabold leading-[1.02] tracking-tight text-white mb-4">
+      <span class="hero-line">Joseph</span>
+      <span class="hero-line block mt-[-0.02em]">
+        <span class="text-ice">Trilles</span>
+        <span class="text-[clamp(1rem,2vw,1.6rem)] font-normal text-dark-400 align-middle ml-3">AI Engineer</span>
+      </span>
+    </h1>
+
+    <div class="flex flex-wrap gap-1.5 mb-5 hero-line">
+      <span class="tag">AI Automation · Hermes OS</span>
+      <span class="tag">LLM Orchestration</span>
+      <span class="tag">Gov Ops · ICT</span>
+    </div>
+
+    <p class="text-sm text-dark-200 max-w-2xl leading-relaxed hero-line">
+      <span class="terminal-cursor text-ice">$&nbsp;</span>
+      Computer engineer at the intersection of government operations and AI —
+      building autonomous agent systems, automation pipelines, and knowledge workflows
+      that run 24/7. Operates LOKI &mdash; a multi-agent AI ecosystem across Hermes, Codex, Gemini, and DeepSeek.
+    </p>
+
+    <div class="flex flex-wrap gap-2.5 mt-6 hero-line">
+      <a href="#work" class="btn-primary">
+        See Work
+        <span class="btn-icon-wrap" aria-hidden="true">→</span>
+      </a>
+      <a href="#contact" class="btn-secondary">Contact</a>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ STATS (Layer 3: animated counters) ═══ -->
+<section class="border-y border-[#181818]" aria-label="Key metrics">
+  <div class="max-w-4xl mx-auto px-4">
+    <div class="grid grid-cols-2 sm:grid-cols-4 divide-x divide-[#181818]">
+      <div class="py-4 px-3 stat-cell">
+        <div class="stat-number" data-target="10">0</div>
+        <p class="text-[10px] text-dark-500 leading-tight mt-1">Years in gov operations</p>
+      </div>
+      <div class="py-4 px-3 stat-cell">
+        <div class="stat-number" data-target="7">0</div>
+        <p class="text-[10px] text-dark-500 leading-tight mt-1">AI agents in ecosystem</p>
+      </div>
+      <div class="py-4 px-3 stat-cell">
+        <div class="stat-number" data-target="1">0</div>
+        <p class="text-[10px] text-dark-500 leading-tight mt-1">Award-winning brand</p>
+      </div>
+      <div class="py-4 px-3 stat-cell">
+        <div class="stat-number" data-target="7">0</div>
+        <p class="text-[10px] text-dark-500 leading-tight mt-1">Tech stacks mastered</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ ABOUT ═══ -->
+<section id="about" class="py-16 px-4" aria-label="About">
+  <div class="max-w-4xl mx-auto">
+    <span class="section-label mb-6 block"><span class="text-dark-400">01</span> About</span>
+
+    <div class="grid md:grid-cols-5 gap-6 mt-3">
+      <div class="md:col-span-2">
+        <h2 class="text-lg font-bold text-white leading-snug">
+          Gov ops <span class="text-ice/40">&times;</span> AI engineering
+        </h2>
+        <p class="text-xs text-dark-300 leading-relaxed mt-3">
+          Computer Engineer and Senior Tourism Operations Officer with a decade at the
+          Department of Tourism Region V. Lead ICT architecture, built the award-winning
+          Exciting Bicol brand, and operate LOKI — an autonomous AI agent ecosystem
+          running across Hermes, Codex, Gemini, DeepSeek, and local models.
+        </p>
+        <p class="text-xs text-dark-400 leading-relaxed mt-2">
+          Transitioning into a full-time remote AI engineering role.
+          <span class="text-ice/60">Target: $4k–$8k/mo.</span>
+        </p>
+
+        <div class="flex flex-wrap gap-1.5 mt-4">
+          <span class="tag">DOT Region V</span>
+          <span class="tag">ICT Focal</span>
+          <span class="tag">DPO</span>
+          <span class="tag">Hermes Operator</span>
+        </div>
+      </div>
+
+      <!-- Double-Bezel Grid (Layer 2) -->
+      <div class="md:col-span-3 grid grid-cols-2 gap-3">
+        <div class="card-outer"><div class="card-inner">
+          <span class="text-[10px] font-semibold text-ice tracking-wide">AI / LLM</span>
+          <p class="text-[10px] text-dark-400 mt-2 leading-relaxed">DeepSeek, Gemini, Claude, Hermes Agent, Ollama, Qwen, DSPy</p>
+        </div></div>
+        <div class="card-outer"><div class="card-inner">
+          <span class="text-[10px] font-semibold text-ice tracking-wide">Automation</span>
+          <p class="text-[10px] text-dark-400 mt-2 leading-relaxed">n8n, cron, Composio, webhooks, GWS API, sub-agents</p>
+        </div></div>
+        <div class="card-outer"><div class="card-inner">
+          <span class="text-[10px] font-semibold text-ice tracking-wide">Web / Design</span>
+          <p class="text-[10px] text-dark-400 mt-2 leading-relaxed">React, Tailwind, GSAP, Framer, SEO, Figma, brand design</p>
+        </div></div>
+        <div class="card-outer"><div class="card-inner">
+          <span class="text-[10px] font-semibold text-ice tracking-wide">Creative Suite</span>
+          <p class="text-[10px] text-dark-400 mt-2 leading-relaxed">Photoshop, Illustrator, Premiere, After Effects, drone, photo</p>
+        </div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ DIVIDER ═══ -->
+<hr class="footer-divider max-w-4xl mx-auto" role="presentation" />
+
+<!-- ═══ WORK ═══ -->
+<section id="work" class="py-16 px-4" aria-label="Projects">
+  <div class="max-w-4xl mx-auto">
+    <span class="section-label mb-6 block"><span class="text-dark-400">02</span> Projects</span>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 md:grid-rows-2 gap-3 auto-rows-[180px]">
+      <!-- LOKI OS — Hero Project -->
+      <div class="project-card md:col-span-2 md:row-span-2 card-reveal">
+        <div class="project-glow" aria-hidden="true"></div>
+        <div class="project-inner">
+          <div>
+            <span class="text-[8px] text-ice/40 tracking-[0.2em] uppercase">Flagship · 2025</span>
+            <h3 class="text-sm sm:text-base font-bold text-white mt-2 mb-1.5">LOKI — AI Operating System</h3>
+            <p class="text-[11px] text-dark-400 leading-relaxed max-w-prose">
+              Daily AI operator handling scheduled briefs, career scouting, health logging,
+              staff monitoring, vault management, and workflow execution.
+              7 agents with multi-LLM routing across Hermes, Codex, Gemini, and DeepSeek.
+            </p>
+          </div>
+          <div class="flex flex-wrap gap-1 mt-3">
+            <span class="tag">Hermes Agent</span>
+            <span class="tag">DeepSeek</span>
+            <span class="tag">Cron</span>
+            <span class="tag">Obsidian</span>
+            <span class="tag">24/7</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- KFX Dispatch -->
+      <div class="project-card card-reveal">
+        <div class="project-glow" aria-hidden="true"></div>
+        <div class="project-inner">
+          <div>
+            <span class="text-[8px] text-ice/30 tracking-[0.2em] uppercase">Tool · 2025</span>
+            <h3 class="text-xs font-bold text-white mt-1.5 mb-1">KFX Dispatch</h3>
+            <p class="text-[10px] text-dark-400 leading-relaxed">
+              Gmail, Calendar, Sheets, RSS → AI summary → Discord + Obsidian archive.
+              Automated staff operations reporting.
+            </p>
+          </div>
+          <div class="flex flex-wrap gap-1 mt-2">
+            <span class="tag">GWS</span>
+            <span class="tag">n8n</span>
+            <span class="tag">Discord</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Career GODMODE -->
+      <div class="project-card card-reveal">
+        <div class="project-glow" aria-hidden="true"></div>
+        <div class="project-inner">
+          <div>
+            <span class="text-[8px] text-ice/30 tracking-[0.2em] uppercase">Automation · 2025</span>
+            <h3 class="text-xs font-bold text-white mt-1.5 mb-1">Career GODMODE</h3>
+            <p class="text-[10px] text-dark-400 leading-relaxed">
+              Scout, score, package, draft, track — full job-search pipeline automation
+              with live Discord alerts.
+            </p>
+          </div>
+          <div class="flex flex-wrap gap-1 mt-2">
+            <span class="tag">AI Scout</span>
+            <span class="tag">PDF Gen</span>
+            <span class="tag">Cron</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Exciting Bicol -->
+      <div class="project-card card-reveal">
+        <div class="project-glow" aria-hidden="true"></div>
+        <div class="project-inner">
+          <div>
+            <span class="text-[8px] text-ice/30 tracking-[0.2em] uppercase">Award · 2024</span>
+            <h3 class="text-xs font-bold text-white mt-1.5 mb-1">Exciting Bicol</h3>
+            <p class="text-[10px] text-dark-400 leading-relaxed">
+              TPB Best Regional Tourism Brand. Full visual identity, campaign materials, website.
+            </p>
+          </div>
+          <div class="flex flex-wrap gap-1 mt-2">
+            <span class="tag">Identity</span>
+            <span class="tag">Award</span>
+            <span class="tag">Campaign</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- DOT V Database -->
+      <div class="project-card card-reveal">
+        <div class="project-glow" aria-hidden="true"></div>
+        <div class="project-inner">
+          <div>
+            <span class="text-[8px] text-ice/30 tracking-[0.2em] uppercase">Enterprise · Live</span>
+            <h3 class="text-xs font-bold text-white mt-1.5 mb-1">DOT V Database</h3>
+            <p class="text-[10px] text-dark-400 leading-relaxed">
+              Integrated platform: accreditation, stats, training, finance, admin. Phase III live.
+            </p>
+          </div>
+          <div class="flex flex-wrap gap-1 mt-2">
+            <span class="tag">Database</span>
+            <span class="tag">Gov</span>
+            <span class="tag">Full-stack</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ DIVIDER ═══ -->
+<hr class="footer-divider max-w-4xl mx-auto" role="presentation" />
+
+<!-- ═══ STACK ═══ -->
+<section id="stack" class="py-16 px-4" aria-label="Stack and experience">
+  <div class="max-w-4xl mx-auto">
+    <span class="section-label mb-6 block"><span class="text-dark-400">03</span> Stack</span>
+
+    <div class="grid md:grid-cols-2 gap-10 mt-3">
+      <!-- Skills -->
+      <div>
+        <h3 class="text-xs font-semibold text-white mb-4 tracking-wide">Proficiencies</h3>
+        <div class="space-y-4">
+          <div class="skill-group">
+            <div class="flex justify-between text-xs mb-1">
+              <span class="text-white/90">AI / LLM Orchestration</span>
+              <span class="text-ice/50 text-[10px]">Advanced</span>
+            </div>
+            <div class="skill-bar-track"><div class="skill-bar-fill" data-width="95"></div></div>
+          </div>
+          <div class="skill-group">
+            <div class="flex justify-between text-xs mb-1">
+              <span class="text-white/90">Automation &amp; Workflows</span>
+              <span class="text-ice/50 text-[10px]">Advanced</span>
+            </div>
+            <div class="skill-bar-track"><div class="skill-bar-fill" data-width="92"></div></div>
+          </div>
+          <div class="skill-group">
+            <div class="flex justify-between text-xs mb-1">
+              <span class="text-white/90">Web Development</span>
+              <span class="text-ice/50 text-[10px]">Advanced</span>
+            </div>
+            <div class="skill-bar-track"><div class="skill-bar-fill" data-width="85"></div></div>
+          </div>
+          <div class="skill-group">
+            <div class="flex justify-between text-xs mb-1">
+              <span class="text-white/90">Adobe Creative Suite</span>
+              <span class="text-ice/50 text-[10px]">Advanced</span>
+            </div>
+            <div class="skill-bar-track"><div class="skill-bar-fill" data-width="88"></div></div>
+          </div>
+          <div class="skill-group">
+            <div class="flex justify-between text-xs mb-1">
+              <span class="text-white/90">Database Systems</span>
+              <span class="text-ice/50 text-[10px]">Proficient</span>
+            </div>
+            <div class="skill-bar-track"><div class="skill-bar-fill" data-width="75"></div></div>
+          </div>
+          <div class="skill-group">
+            <div class="flex justify-between text-xs mb-1">
+              <span class="text-white/90">Project &amp; Team Leadership</span>
+              <span class="text-ice/50 text-[10px]">Proficient</span>
+            </div>
+            <div class="skill-bar-track"><div class="skill-bar-fill" data-width="82"></div></div>
+          </div>
+        </div>
+
+        <!-- Tech Grid (Layer 3: interactive) -->
+        <h3 class="text-xs font-semibold text-white mt-8 mb-3 tracking-wide">Technologies</h3>
+        <div class="grid grid-cols-2 sm:grid-cols-3 gap-1.5 tech-grid">
+          <div class="tech-item"><span class="tech-dot"></span>Hermes Agent</div>
+          <div class="tech-item"><span class="tech-dot"></span>DeepSeek</div>
+          <div class="tech-item"><span class="tech-dot"></span>Gemini</div>
+          <div class="tech-item"><span class="tech-dot"></span>Claude</div>
+          <div class="tech-item"><span class="tech-dot"></span>Codex CLI</div>
+          <div class="tech-item"><span class="tech-dot"></span>Obsidian</div>
+          <div class="tech-item"><span class="tech-dot"></span>n8n</div>
+          <div class="tech-item"><span class="tech-dot"></span>React</div>
+          <div class="tech-item"><span class="tech-dot"></span>Tailwind</div>
+          <div class="tech-item"><span class="tech-dot"></span>Python</div>
+          <div class="tech-item"><span class="tech-dot"></span>GSAP</div>
+          <div class="tech-item"><span class="tech-dot"></span>SQL</div>
+        </div>
+      </div>
+
+      <!-- Timeline (Layer 1: refined) -->
+      <div>
+        <h3 class="text-xs font-semibold text-white mb-4 tracking-wide">History</h3>
+        <div class="flex flex-col">
+          <div class="flex gap-3 timeline-item">
+            <div class="flex flex-col items-center pt-0.5">
+              <div class="timeline-dot"></div>
+              <div class="timeline-line"></div>
+            </div>
+            <div class="pb-5">
+              <span class="text-[8px] text-ice/40 tracking-[0.2em] uppercase">Dec 2024 — Present</span>
+              <h4 class="text-xs font-bold text-white mt-0.5">Senior Tourism Operations Officer</h4>
+              <p class="text-[10px] text-dark-500">DOT Region V — Product &amp; Market Development Head</p>
+              <p class="text-[10px] text-dark-400 mt-0.5">ICT Focal, Data Privacy Officer, Database Modernization Lead, 5-person unit</p>
+            </div>
+          </div>
+          <div class="flex gap-3 timeline-item">
+            <div class="flex flex-col items-center pt-0.5">
+              <div class="timeline-dot"></div>
+              <div class="timeline-line"></div>
+            </div>
+            <div class="pb-5">
+              <span class="text-[8px] text-ice/40 tracking-[0.2em] uppercase">Jan 2019 — Dec 2024</span>
+              <h4 class="text-xs font-bold text-white mt-0.5">Tourism Operations Officer</h4>
+              <p class="text-[10px] text-dark-500">DOT Region V — Product &amp; Market Development</p>
+              <p class="text-[10px] text-dark-400 mt-0.5">Created Exciting Bicol brand — TPB Best Regional Tourism Brand</p>
+            </div>
+          </div>
+          <div class="flex gap-3 timeline-item">
+            <div class="flex flex-col items-center pt-0.5">
+              <div class="timeline-dot"></div>
+              <div class="timeline-line"></div>
+            </div>
+            <div class="pb-5">
+              <span class="text-[8px] text-ice/40 tracking-[0.2em] uppercase">Nov 2014 — Jan 2019</span>
+              <h4 class="text-xs font-bold text-white mt-0.5">Administrative Aide IV</h4>
+              <p class="text-[10px] text-dark-500">DOT Region V — ICT, Design &amp; Operations</p>
+              <p class="text-[10px] text-dark-400 mt-0.5">Website development, database administration, graphic design, event support</p>
+            </div>
+          </div>
+          <div class="flex gap-3 timeline-item">
+            <div class="flex flex-col items-center pt-0.5">
+              <div class="timeline-dot"></div>
+            </div>
+            <div>
+              <span class="text-[8px] text-ice/40 tracking-[0.2em] uppercase">2024 — Present</span>
+              <h4 class="text-xs font-bold text-white mt-0.5">AI Automation Builder</h4>
+              <p class="text-[10px] text-dark-500">Hermes / KFX / JosephOS</p>
+              <p class="text-[10px] text-dark-400 mt-0.5">Practical AI workflows for business ops, productivity, career, health, knowledge</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ DIVIDER ═══ -->
+<hr class="footer-divider max-w-4xl mx-auto" role="presentation" />
+
+<!-- ═══ CREDENTIALS ═══ -->
+<section class="py-14 px-4" aria-label="Credentials">
+  <div class="max-w-4xl mx-auto">
+    <span class="section-label mb-6 block"><span class="text-dark-400">04</span> Credentials</span>
+    <div class="grid sm:grid-cols-3 gap-3 mt-3">
+      <div class="card card-reveal">
+        <span class="text-[11px] font-semibold text-ice">BS Computer Engineering</span>
+        <p class="text-[10px] text-dark-500 mt-1.5">AMA Computer University · 2009–2015</p>
+        <p class="text-[10px] text-dark-400 mt-1 leading-relaxed">Computer engineering foundations, systems design, programming</p>
+      </div>
+      <div class="card card-reveal">
+        <span class="text-[11px] font-semibold text-ice">Career Service Professional</span>
+        <p class="text-[10px] text-dark-500 mt-1.5">Civil Service Commission · 81.74% (2013)</p>
+        <p class="text-[10px] text-dark-400 mt-1 leading-relaxed">Philippine civil service eligibility — professional level</p>
+      </div>
+      <div class="card card-reveal">
+        <span class="text-[11px] font-semibold text-ice">Google PM Certificate</span>
+        <p class="text-[10px] text-dark-500 mt-1.5">DICT Scholarship Program · 2023</p>
+        <p class="text-[10px] text-dark-400 mt-1 leading-relaxed">Project management, agile, stakeholder coordination</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ DIVIDER ═══ -->
+<hr class="footer-divider max-w-4xl mx-auto" role="presentation" />
+
+<!-- ═══ CONTACT ═══ -->
+<section id="contact" class="py-16 px-4" aria-label="Contact">
+  <div class="max-w-3xl mx-auto text-center">
+    <span class="section-label justify-center mb-5"><span class="text-dark-400">05</span> Contact</span>
+
+    <h2 class="text-lg font-bold text-white mt-2 mb-2">Let's build something</h2>
+    <p class="text-xs text-dark-400 mb-6 max-w-xs mx-auto leading-relaxed">
+      Open to remote AI engineering roles and automation consulting.
+      Legazpi City · UTC+8.
+    </p>
+
+    <div class="flex flex-wrap justify-center gap-3">
+      <a href="mailto:josephtrilles@gmail.com" class="btn-primary" aria-label="Send email to Joseph Trilles">
+        <span>MAIL</span>
+        <span class="btn-icon-wrap" aria-hidden="true">→</span>
+      </a>
+      <a href="https://linkedin.com/in/josephtrilles" target="_blank" rel="noopener noreferrer" class="btn-secondary" aria-label="LinkedIn profile">
+        LINKEDIN
+      </a>
+      <a href="https://github.com/jtrilles" target="_blank" rel="noopener noreferrer" class="btn-secondary" aria-label="GitHub profile">
+        GITHUB
+      </a>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- ═══ FOOTER ═══ -->
+<footer class="py-4 px-4 border-t border-[#181818]" role="contentinfo">
+  <div class="max-w-4xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-1 text-[9px] text-dark-500">
+    <span>© 2026 Joseph Trilles. Built with LOKI — 3-layer design system.</span>
+    <span class="flex items-center gap-1">
+      <span class="w-1.5 h-1.5 rounded-full bg-ice/40 animate-pulse"></span>
+      $ echo $LOCATION → Legazpi City, PH
+    </span>
+  </div>
+</footer>
+
+<!-- ═══ SCRIPTS (Layer 3: motion choreography) ═══ -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script>
+gsap.registerPlugin(ScrollTrigger);
+
+// ── Accessibility: reduced motion guard ──
+const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+const dur = prefersReduced ? 0.01 : null;
+const dist = prefersReduced ? 0 : null;
+
+// ── HERO: staggered reveal (Layer 2: choreography) ──
+const heroTl = gsap.timeline({ defaults: { ease: 'power3.out', duration: dur || 0.55 } });
+heroTl
+  .from('.hero-line', { y: dist || 16, opacity: 0, duration: dur || 0.5, stagger: 0.1 })
+  .from('.tag', { y: dist || 8, opacity: 0, duration: dur || 0.25, stagger: 0.04 }, '-=0.25')
+  .from('.btn-primary, .btn-secondary', { y: dist || 10, opacity: 0, duration: dur || 0.3 }, '-=0.15');
+
+// ── STAT COUNTERS (Layer 3: animated) ──
+const counterCells = document.querySelectorAll('.stat-cell');
+counterCells.forEach((cell) => {
+  const numEl = cell.querySelector('.stat-number');
+  const target = parseInt(numEl.dataset.target);
+  ScrollTrigger.create({
+    trigger: cell,
+    start: 'top 90%',
+    once: true,
+    onEnter: () => {
+      gsap.to(numEl, {
+        innerText: target,
+        duration: dur || 1.6,
+        ease: 'power2.out',
+        snap: { innerText: 1 },
+        onUpdate: () => {
+          const val = parseFloat(numEl.innerText);
+          numEl.innerText = val >= 10 ? Math.round(val) : Math.round(val);
+        }
+      });
+    }
+  });
+});
+
+// ── SKILL BARS (Layer 3: scroll-triggered) ──
+document.querySelectorAll('.skill-bar-fill').forEach((bar) => {
+  const w = bar.dataset.width || bar.style.width;
+  ScrollTrigger.create({
+    trigger: bar.closest('.skill-group'),
+    start: 'top 88%',
+    once: true,
+    onEnter: () => {
+      gsap.to(bar, {
+        width: w + '%',
+        duration: dur || 1.2,
+        ease: 'power2.out'
+      });
+    }
+  });
+});
+
+// ── TECH GRID (Layer 3: stagger) ──
+gsap.from('.tech-item', {
+  y: dist || 10,
+  opacity: 0,
+  duration: dur || 0.3,
+  stagger: 0.02,
+  scrollTrigger: {
+    trigger: '.tech-grid',
+    start: 'top 88%',
+    toggleActions: 'play none none none'
+  }
+});
+
+// ── CARD REVEALS (Layer 3: scroll) ──
+gsap.from('.card-reveal', {
+  y: dist || 12,
+  opacity: 0,
+  duration: dur || 0.4,
+  ease: 'power3.out',
+  stagger: 0.04,
+  scrollTrigger: {
+    trigger: '#work',
+    start: 'top 85%',
+    toggleActions: 'play none none none'
+  }
+});
+
+// ── TIMELINE (Layer 3: sequential reveal) ──
+gsap.from('.timeline-item', {
+  y: dist || 12,
+  opacity: 0,
+  duration: dur || 0.4,
+  ease: 'power3.out',
+  stagger: 0.08,
+  scrollTrigger: {
+    trigger: '.timeline-item',
+    start: 'top 85%',
+    toggleActions: 'play none none none'
+  }
+});
+
+// ── ABOUT CARDS (Layer 3: scroll) ──
+gsap.from('.card-outer', {
+  y: dist || 12,
+  opacity: 0,
+  duration: dur || 0.4,
+  ease: 'power3.out',
+  stagger: 0.06,
+  scrollTrigger: {
+    trigger: '.card-outer',
+    start: 'top 88%',
+    toggleActions: 'play none none none'
+  }
+});
+
+// ── NAV HIGHLIGHT (Layer 3: UX) ──
+const sections = document.querySelectorAll('section[id]');
+const navLinks = document.querySelectorAll('.nav-link');
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach((entry) => {
+    if (entry.isIntersecting) {
+      navLinks.forEach((l) => {
+        l.style.color = '#888';
+        l.style.background = 'transparent';
+      });
+      const active = document.querySelector(`.nav-link[data-section="${entry.target.id}"]`);
+      if (active) {
+        active.style.color = '#7dd3fc';
+        active.style.background = 'rgba(125,211,252,0.06)';
+      }
+    }
+  });
+}, { threshold: 0.3, rootMargin: '-80px 0px 0px 0px' });
+sections.forEach((s) => observer.observe(s));
+
+// ── MAGNETIC CARD GLOW (Layer 3: interactive) ──
+document.querySelectorAll('.project-card').forEach((card) => {
+  card.addEventListener('mousemove', (e) => {
+    const rect = card.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    const glow = card.querySelector('.project-glow');
+    if (glow) {
+      glow.style.left = x + 'px';
+      glow.style.top = y + 'px';
+    }
+  });
+});
+
+// ── NAV LINK MAGNET (Layer 2: magnetic hover) ──
+document.querySelectorAll('.nav-link').forEach((link) => {
+  link.addEventListener('mouseenter', () => {
+    gsap.to(link, { scale: 1.04, duration: 0.25, ease: 'power2.out' });
+  });
+  link.addEventListener('mouseleave', () => {
+    gsap.to(link, { scale: 1, duration: 0.25, ease: 'power2.out' });
+  });
+});
+
+console.log('⚡ LOKI — Portfolio v3. Built with 3-layer design system');
+</script>
+</body>
+</html>
