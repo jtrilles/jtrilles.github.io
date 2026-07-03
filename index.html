@@ -5,45 +5,23 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Joseph Trilles — Gov Ops × AI Engineer</title>
 <meta name="description" content="Computer engineer building autonomous multi-agent systems from Legazpi City, Philippines. Gov ops turned AI operator.">
-<meta name="theme-color" content="#050505">
+<meta name="theme-color" content="#0b0806">
 <meta name="color-scheme" content="dark only">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
 <script src="https://cdn.tailwindcss.com"></script>
 <script>
 tailwind.config={
   theme:{
     extend:{
       fontFamily:{
-        sans:['Inter','system-ui','sans-serif'],
         mono:['JetBrains Mono','SF Mono','monospace'],
       },
       colors:{
-        dark:{
-          50:'#e8e8e8',100:'#c0c0c0',200:'#989898',300:'#787878',
-          400:'#585858',500:'#383838',600:'#282828',
-          700:'#181818',800:'#0f0f0f',900:'#080808',950:'#050505'
-        },
-        ice:{DEFAULT:'#7dd3fc',50:'#e0f2fe',100:'#bae6fd',200:'#7dd3fc',
-             300:'#38bdf8',400:'#0ea5e9',500:'#0284c7'}
-      },
-      animation:{
-        'blink':'blink 1s step-end infinite',
-        'grid-drift':'grid-drift 12s linear infinite',
-        'grain':'grain 0.3s steps(4) infinite',
-        'float':'float 8s ease-in-out infinite',
-        'float-slow':'float 12s ease-in-out infinite',
-        'glow':'glow 3s ease-in-out infinite alternate',
-      },
-      keyframes:{
-        blink:{'50%':{opacity:'0'}},
-        'grid-drift':{'0%':{transform:'translateY(0)'},'100%':{transform:'translateY(-24px)'}},
-        'grain':{'0%,100%':{transform:'translate(0)'},'10%':{transform:'translate(-1px,-1px)'},'20%':{transform:'translate(1px,-1px)'},'30%':{transform:'translate(-1px,1px)'},'40%':{transform:'translate(1px,1px)'}},
-        float:{'0%,100%':{transform:'translateY(0)'},'50%':{transform:'translateY(-10px)'}},
-        'float-slow':{'0%,100%':{transform:'translateY(0)'},'50%':{transform:'translateY(-6px)'}},
-        glow:{'0%':{opacity:'0.4'},'100%':{opacity:'0.8'}},
+        c:{DEFAULT:'#ff6600',50:'#fff0e0',100:'#ffd8a0',200:'#ffb040',300:'#ff8c00',400:'#ff6600',500:'#cc5200',600:'#993d00',700:'#662900',800:'#331400',900:'#1a0a00'},
+        dk:{50:'#c8c0b8',100:'#b0a89a',200:'#989080',300:'#807060',400:'#685850',500:'#504840',600:'#38302a',700:'#28201a',800:'#181410',900:'#0b0806',950:'#080605'},
       }
     }
   }
@@ -54,385 +32,328 @@ tailwind.config={
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
 body{
-  background:#050505;color:#c0c0c0;
-  font-family:'Inter','system-ui',sans-serif;
-  font-size:14px;line-height:1.6;
+  background:#0b0806;color:#b0a89a;
+  font-family:'JetBrains Mono','SF Mono',monospace;
+  font-size:13px;line-height:1.65;
   overflow-x:hidden;
   -webkit-font-smoothing:antialiased;
 }
-::selection{background:rgba(125,211,252,0.18);color:#fff}
+::selection{background:rgba(255,102,0,0.15);color:#fff}
 ::-webkit-scrollbar{width:3px}
-::-webkit-scrollbar-track{background:#080808}
-::-webkit-scrollbar-thumb{background:#383838;border-radius:2px}
+::-webkit-scrollbar-track{background:#080605}
+::-webkit-scrollbar-thumb{background:#38302a;border-radius:1px}
 
-/* ═══ Noise / Grain Texture (21st.dev Paper Shader pattern) ═══ */
-.noise::before{
-  content:'';position:fixed;inset:0;z-index:9998;pointer-events:none;
-  opacity:0.025;mix-blend-mode:screen;
-  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-  background-repeat:repeat;background-size:256px 256px;
-  animation:grain 0.3s steps(4) infinite;
+/* ═══ SCANLINE OVERLAY (BF6 HUD) ═══ */
+.scanlines::before{
+  content:'';position:fixed;inset:0;z-index:9999;pointer-events:none;
+  background:repeating-linear-gradient(
+    0deg,transparent,transparent 2px,rgba(0,0,0,0.03) 2px,rgba(0,0,0,0.03) 4px
+  );
 }
 
-/* ═══ Animated Grid (21st.dev Hero pattern) ═══ */
-.hero-grid{
+/* ═══ HUD GRID ═══ */
+.hud-grid{
   position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden;
 }
-.hero-grid::before{
+.hud-grid::before{
   content:'';position:absolute;inset:-50%;
   background-image:
-    linear-gradient(rgba(125,211,252,0.02) 1px,transparent 1px),
-    linear-gradient(90deg,rgba(125,211,252,0.02) 1px,transparent 1px);
-  background-size:64px 64px;
-  animation:grid-drift 12s linear infinite;
+    linear-gradient(rgba(255,102,0,0.012) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(255,102,0,0.012) 1px,transparent 1px);
+  background-size:48px 48px;
 }
-.hero-grid-overlay{
-  position:absolute;inset:0;
-  background:radial-gradient(ellipse 60% 50% at 50% 40%,transparent 30%,#050505 100%);
-  pointer-events:none;
-}
-
-/* ═══ Ambient Gradient Orbs ═══ */
-.orb{
-  position:fixed;pointer-events:none;z-index:0;border-radius:50%;
-  filter:blur(80px);
-}
-.orb-1{top:-15vh;right:-10vw;width:50vw;height:50vw;background:rgba(125,211,252,0.02);animation:float 8s ease-in-out infinite}
-.orb-2{bottom:-20vh;left:-8vw;width:45vw;height:45vw;background:rgba(125,211,252,0.015);animation:float-slow 12s ease-in-out infinite}
-.orb-3{top:40vh;left:50%;width:30vw;height:30vw;background:rgba(125,211,252,0.008);animation:float 10s ease-in-out infinite reverse}
-
-/* ═══ Fluid Island Nav (21st.dev nav pattern) ═══ */
-.nav-island{
-  position:fixed;top:16px;left:50%;transform:translateX(-50%);
-  z-index:100;display:flex;align-items:center;gap:2px;
-  background:rgba(5,5,5,0.6);
-  backdrop-filter:blur(32px) saturate(1.2);
-  -webkit-backdrop-filter:blur(32px) saturate(1.2);
-  border:1px solid rgba(255,255,255,0.06);
-  border-radius:999px;
-  padding:4px 3px;
-  transition:border-color 0.6s cubic-bezier(0.32,0.72,0,1);
-}
-.nav-island:hover{border-color:rgba(125,211,252,0.08)}
-.nav-logo{color:#7dd3fc;font-size:9px;font-weight:700;padding:4px 10px;letter-spacing:0.1em;text-decoration:none;font-family:'JetBrains Mono',monospace}
-.nav-sep{width:1px;height:14px;background:rgba(255,255,255,0.04);margin:0 2px}
-.nav-link{
-  position:relative;padding:6px 12px;font-size:9.5px;letter-spacing:0.06em;
-  font-family:'JetBrains Mono',monospace;
-  color:#585858;text-decoration:none;border-radius:999px;
-  transition:color 0.35s cubic-bezier(0.32,0.72,0,1);
-  white-space:nowrap;
-}
-.nav-link:hover{color:#c0c0c0}
-.nav-link.active{color:#7dd3fc}
-.nav-indicator{
-  position:absolute;bottom:2px;left:0;right:0;height:2px;
-  background:#7dd3fc;border-radius:2px;
-  transform:scaleX(0);transition:transform 0.5s cubic-bezier(0.32,0.72,0,1);
-}
-.nav-link.active .nav-indicator{transform:scaleX(1)}
-
-/* ═══ Gradient Text (21st.dev hero pattern) ═══ */
-.gradient-text{
-  background:linear-gradient(135deg,#7dd3fc 0%,#38bdf8 40%,#e0f2fe 70%,#7dd3fc 100%);
-  -webkit-background-clip:text;
-  -webkit-text-fill-color:transparent;
-  background-clip:text;
-}
-
-/* ═══ Double-Bezel Cards (21st.dev Card pattern) ═══ */
-.bezel-outer{
-  background:rgba(18,18,18,0.35);
-  border:1px solid rgba(255,255,255,0.04);
-  padding:1.5px;
-  border-radius:1rem;
-  transition:border-color 0.6s cubic-bezier(0.32,0.72,0,1);
-  position:relative;overflow:hidden;
-}
-.bezel-outer:hover{border-color:rgba(125,211,252,0.08)}
-.bezel-outer::after{
-  content:'';position:absolute;inset:-1px;border-radius:inherit;
-  opacity:0;transition:opacity 0.6s ease;
-  background:radial-gradient(600px circle at var(--mx,50%) var(--my,50%),rgba(125,211,252,0.03),transparent 40%);
-  pointer-events:none;
-}
-.bezel-outer:hover::after{opacity:1}
-.bezel-inner{
-  background:rgba(8,8,8,0.5);
-  backdrop-filter:blur(12px);
-  -webkit-backdrop-filter:blur(12px);
-  border-radius:calc(1rem - 1.5px);
-  padding:1.5rem;
-  height:100%;
-  box-shadow:inset 0 1px 0 rgba(255,255,255,0.03);
-}
-
-/* ═══ Tag (21st.dev Badge pattern) ═══ */
-.tag{
-  display:inline-flex;padding:2px 10px;font-family:'JetBrains Mono',monospace;
-  background:rgba(125,211,252,0.02);
-  color:rgba(125,211,252,0.5);font-size:9px;
-  letter-spacing:0.04em;text-transform:uppercase;
-  line-height:1.8;
-  transition:all 0.3s cubic-bezier(0.32,0.72,0,1);
-  position:relative;
-  isolation:isolate;
-}
-.tag::before{
+.hud-grid::after{
   content:'';position:absolute;inset:0;
-  border:1px solid rgba(125,211,252,0.06);
+  background:radial-gradient(ellipse 60% 50% at 50% 40%,transparent 25%,#0b0806 100%);
   pointer-events:none;
 }
-.tag:hover{background:rgba(125,211,252,0.05);color:rgba(125,211,252,0.8)}
-.tag:hover::before{border-color:rgba(125,211,252,0.12)}
 
-/* ═══ Section heading w/ gradient line ═══ */
-.sec-eyebrow{
-  font-size:10px;letter-spacing:0.18em;color:rgba(125,211,252,0.2);
-  font-family:'JetBrains Mono',monospace;
-  font-weight:400;text-transform:uppercase;
-  display:flex;align-items:center;gap:12px;
+/* ═══ AMBIENT GLOW (orange) ═══ */
+.glow{position:fixed;pointer-events:none;z-index:0;border-radius:50%;filter:blur(100px)}
+.glow-1{top:-15vh;right:-10vw;width:50vw;height:50vw;background:rgba(255,102,0,0.02)}
+.glow-2{bottom:-20vh;left:-8vw;width:45vw;height:45vw;background:rgba(255,102,0,0.015)}
+
+/* ═══ HUD NAV BAR ═══ */
+.hud-nav{
+  position:fixed;top:0;left:0;right:0;z-index:100;
+  background:rgba(11,8,6,0.85);
+  backdrop-filter:blur(20px);
+  -webkit-backdrop-filter:blur(20px);
+  border-bottom:2px solid rgba(255,102,0,0.06);
 }
-.sec-eyebrow::after{
-  content:'';flex:1;height:1px;
-  background:linear-gradient(90deg,rgba(125,211,252,0.06),transparent);
+.hud-nav-inner{
+  max-width:1000px;margin:0 auto;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 20px;height:44px;
+}
+.hud-nav-mark{color:#ff6600;font-size:11px;font-weight:700;letter-spacing:0.15em;text-decoration:none}
+.hud-nav-links{display:flex;align-items:center;gap:0}
+.hud-nav-links a{
+  position:relative;padding:0 14px;
+  font-size:9px;letter-spacing:0.12em;
+  color:#504840;text-decoration:none;text-transform:uppercase;
+  height:44px;display:flex;align-items:center;
+  transition:color 0.3s ease;
+  border-left:1px solid rgba(255,255,255,0.02);
+}
+.hud-nav-links a:last-child{border-right:1px solid rgba(255,255,255,0.02)}
+.hud-nav-links a:hover{color:#b0a89a}
+.hud-nav-links a.active{color:#ff6600}
+.hud-nav-links a.active::after{
+  content:'';position:absolute;bottom:0;left:0;right:0;height:2px;
+  background:#ff6600;
 }
 
-/* ═══ Skill Bar (21st.dev Progress pattern) ═══ */
-.skill-track{height:3px;background:rgba(255,255,255,0.02);border-radius:3px;overflow:hidden}
-.skill-fill{
-  height:100%;
-  background:linear-gradient(90deg,#7dd3fc,rgba(125,211,252,0.3) 80%);
-  border-radius:3px;width:0%;
-  transition:width 1.2s cubic-bezier(0.32,0.72,0,1);
+/* ═══ HUD PANEL (thick border, sharp corners) ═══ */
+.hud-panel{
+  border:2px solid rgba(255,102,0,0.04);
+  padding:1.5rem;
+  position:relative;
+  transition:border-color 0.5s cubic-bezier(0.23,1,0.32,1);
 }
+.hud-panel:hover{border-color:rgba(255,102,0,0.1)}
 
-/* ═══ Button (21st.dev magnetic-ready) ═══ */
-.btn-ice{
-  display:inline-flex;align-items:center;gap:10px;
-  padding:12px 22px;
-  background:linear-gradient(135deg,rgba(125,211,252,0.08),rgba(125,211,252,0.04));
-  border:1px solid rgba(125,211,252,0.12);
-  border-radius:999px;
-  color:#7dd3fc;font-size:11px;font-family:'JetBrains Mono',monospace;
-  text-decoration:none;text-transform:uppercase;letter-spacing:0.08em;
-  transition:all 0.3s cubic-bezier(0.32,0.72,0,1);
-  cursor:pointer;position:relative;overflow:hidden;
-}
-.btn-ice:hover{
-  background:linear-gradient(135deg,rgba(125,211,252,0.14),rgba(125,211,252,0.08));
-  border-color:rgba(125,211,252,0.25);
-  transform:translateY(-1px);
-  box-shadow:0 4px 20px rgba(125,211,252,0.06);
-}
-.btn-ice:active{transform:scale(0.97)}
-.btn-ice .ic-w{
-  width:24px;height:24px;border-radius:50%;
-  background:rgba(125,211,252,0.1);
-  display:inline-flex;align-items:center;justify-content:center;
-  font-size:10px;flex-shrink:0;
-  transition:transform 0.4s cubic-bezier(0.32,0.72,0,1);
-}
-.btn-ice:hover .ic-w{transform:translateX(3px) translateY(-1px) scale(1.05)}
-
-.btn-ghost{
-  display:inline-flex;align-items:center;
-  padding:12px 22px;
-  border:1px solid rgba(255,255,255,0.04);
-  border-radius:999px;font-family:'JetBrains Mono',monospace;
-  color:#585858;font-size:11px;text-decoration:none;
-  text-transform:uppercase;letter-spacing:0.08em;
-  transition:all 0.3s cubic-bezier(0.32,0.72,0,1);
-  cursor:pointer;
-}
-.btn-ghost:hover{border-color:rgba(125,211,252,0.12);color:#7dd3fc;transform:translateY(-1px)}
-
-/* ═══ Project Card (21st.dev Shader Card pattern) ═══ */
-.pro-card{
-  position:relative;overflow:hidden;
-  border-radius:1rem;
-  border:1px solid rgba(255,255,255,0.04);
-  background:rgba(10,10,10,0.4);
-  transition:all 0.5s cubic-bezier(0.32,0.72,0,1);
-}
-.pro-card:hover{
-  border-color:rgba(125,211,252,0.08);
-  background:rgba(13,13,13,0.5);
-}
-.pro-card::after{
-  content:'';position:absolute;inset:0;border-radius:inherit;
+/* ═══ HUD CORNER BRACKETS (key BF6 pattern) ═══ */
+.hud-corner::before,.hud-corner::after{
+  content:'';position:absolute;width:10px;height:10px;
+  border-color:#ff6600;border-style:solid;pointer-events:none;
   opacity:0;transition:opacity 0.5s ease;
-  background:radial-gradient(400px circle at var(--mx,50%) var(--my,50%),rgba(125,211,252,0.02),transparent 50%);
-  pointer-events:none;
 }
-.pro-card:hover::after{opacity:1}
-.pro-card-img{
-  height:160px;background-size:cover;background-position:center;
-  background-color:rgba(125,211,252,0.015);
-  transition:transform 0.7s cubic-bezier(0.32,0.72,0,1);
-}
-.pro-card:hover .pro-card-img{transform:scale(1.03)}
+.hud-corner:hover::before,.hud-corner:hover::after{opacity:0.15}
+.hud-corner::before{top:4px;left:4px;border-width:2px 0 0 2px}
+.hud-corner::after{bottom:4px;right:4px;border-width:0 2px 2px 0}
 
-/* ═══ Stat Number ═══ */
+/* ═══ HUD BUTTONS ═══ */
+.btn-hud{
+  display:inline-flex;align-items:center;gap:10px;
+  padding:10px 18px;
+  border:2px solid rgba(255,102,0,0.12);
+  color:#ff6600;font-size:10px;font-family:'JetBrains Mono',monospace;
+  text-decoration:none;text-transform:uppercase;letter-spacing:0.1em;
+  transition:all 0.3s cubic-bezier(0.23,1,0.32,1);
+  cursor:pointer;
+  background:transparent;
+}
+.btn-hud:hover{
+  border-color:#ff6600;
+  background:rgba(255,102,0,0.04);
+}
+.btn-hud-s{
+  display:inline-flex;align-items:center;gap:10px;
+  padding:10px 18px;
+  border:2px solid rgba(255,255,255,0.03);
+  color:#504840;font-size:10px;font-family:'JetBrains Mono',monospace;
+  text-decoration:none;text-transform:uppercase;letter-spacing:0.1em;
+  transition:all 0.3s cubic-bezier(0.23,1,0.32,1);
+  cursor:pointer;background:transparent;
+}
+.btn-hud-s:hover{border-color:rgba(255,102,0,0.08);color:#b0a89a}
+
+/* ═══ HUD TAG / BADGE ═══ */
+.hud-tag{
+  display:inline-flex;padding:3px 8px 1px;
+  border:1px solid rgba(255,102,0,0.06);
+  color:rgba(255,102,0,0.5);
+  font-size:8px;letter-spacing:0.12em;text-transform:uppercase;
+  line-height:1.6;
+  transition:all 0.3s ease;
+}
+.hud-tag:hover{
+  border-color:rgba(255,102,0,0.15);
+  color:rgba(255,102,0,0.7);
+  background:rgba(255,102,0,0.02);
+}
+
+/* ═══ SECTION HEADER ═══ */
+.sec-hdr{
+  font-size:9px;letter-spacing:0.18em;
+  color:rgba(255,102,0,0.15);
+  font-weight:400;text-transform:uppercase;
+  display:flex;align-items:center;gap:16px;
+}
+.sec-hdr::after{
+  content:'';flex:1;height:2px;
+  background:rgba(255,102,0,0.04);
+}
+.sec-title{
+  font-size:clamp(1.6rem,3.5vw,3rem);
+  font-weight:700;color:#fff;line-height:1.08;letter-spacing:-0.01em;
+}
+
+/* ═══ HUD METER BAR ═══ */
+.meter-track{height:3px;background:rgba(255,102,0,0.02);overflow:hidden}
+.meter-fill{
+  height:100%;
+  background:#ff6600;
+  width:0%;
+  transition:width 1.2s cubic-bezier(0.23,1,0.32,1);
+}
+
+/* ═══ STAT NUMBER (HUD style) ═══ */
 .stat-n{
-  font-size:clamp(1.5rem,3.5vw,2.4rem);
-  font-weight:700;color:#7dd3fc;line-height:1;
-  font-family:'JetBrains Mono',monospace;
+  font-size:clamp(1.6rem,4vw,2.6rem);
+  font-weight:700;color:#ff6600;line-height:1;
   font-variant-numeric:tabular-nums;
 }
 
-/* ═══ Timeline ═══ */
-.t-dot{
-  width:6px;height:6px;border-radius:50%;
-  background:rgba(125,211,252,0.04);
-  border:1.5px solid rgba(125,211,252,0.15);
+/* ═══ SECTION BAR (thick solid, like BF6 HUD dividers) ═══ */
+.section-bar{
+  height:3px;background:rgba(255,102,0,0.04);
+  border-top:2px solid #0b0806;
+}
+
+/* ═══ PROJECT CARD (HUD style) ═══ */
+.pro-c{
+  border:2px solid rgba(255,255,255,0.02);
+  transition:all 0.4s cubic-bezier(0.23,1,0.32,1);
+  position:relative;overflow:hidden;
+}
+.pro-c:hover{border-color:rgba(255,102,0,0.08)}
+.pro-c-loki{
+  border:2px solid rgba(255,102,0,0.06);
+  transition:all 0.4s cubic-bezier(0.23,1,0.32,1);
+  position:relative;overflow:hidden;
+}
+.pro-c-loki:hover{border-color:#ff6600}
+.pro-c-img{
+  height:140px;background-size:cover;background-position:center;
+  background-color:rgba(255,102,0,0.01);
+  transition:transform 0.6s cubic-bezier(0.23,1,0.32,1);
+}
+.pro-c:hover .pro-c-img,.pro-c-loki:hover .pro-c-img{transform:scale(1.02)}
+
+/* ═══ ENTRY ANIMATION ═══ */
+.e{opacity:0;transform:translateY(14px)}
+
+/* ═══ TIMELINE ═══ */
+.td{
+  width:8px;height:8px;
+  background:transparent;
+  border:2px solid rgba(255,102,0,0.08);
   flex-shrink:0;position:relative;z-index:2;
 }
-.t-line{
-  width:1px;flex:1;
-  background:linear-gradient(to bottom,rgba(125,211,252,0.04),transparent);
-  margin-left:2.5px;
-}
+.tl{width:2px;flex:1;background:rgba(255,102,0,0.02);margin-left:3px}
 
-/* ═══ Scrub text ═══ */
-.scrub-w{display:inline-block;margin-right:0.35em;opacity:0.06;}
-
-/* ═══ Screenshot tile ═══ */
+/* ═══ SCREENSHOT ═══ */
 .sshot{
-  border-radius:0.75rem;overflow:hidden;
-  border:1px solid rgba(255,255,255,0.04);
+  border:2px solid rgba(255,255,255,0.02);
   background-size:cover;background-position:center;
-  aspect-ratio:16/11;
-  transition:all 0.5s cubic-bezier(0.32,0.72,0,1);
+  aspect-ratio:16/10;
+  transition:all 0.35s cubic-bezier(0.23,1,0.32,1);
 }
-.sshot:hover{border-color:rgba(125,211,252,0.08);transform:scale(1.012)}
+.sshot:hover{border-color:rgba(255,102,0,0.08);transform:scale(1.008)}
 
-/* ═══ Marquee ═══ */
-.m-track{display:flex;overflow:hidden;white-space:nowrap;border-top:1px solid rgba(255,255,255,0.03);border-bottom:1px solid rgba(255,255,255,0.03)}
-.m-inner{display:flex;gap:48px;padding:0 24px;animation:marquee 40s linear infinite}
+/* ═══ MARQUEE ═══ */
+.m-track{display:flex;overflow:hidden;white-space:nowrap}
+.m-inner{display:flex;gap:32px;padding:0 16px;animation:marquee 40s linear infinite}
 @keyframes marquee{0%{transform:translateX(0)}100%{transform:translateX(-100%)}}
 
-/* ═══ Staggered entry containers ═══ */
-.rs{opacity:0;transform:translateY(12px)}
-.ru{opacity:0;transform:translateY(16px)}
-
-/* ═══ Responsive ═══ */
 @media(max-width:640px){
-  .nav-island{top:10px;padding:3px;gap:0}
-  .nav-link{padding:4px 8px;font-size:8px}
-  .nav-logo{font-size:7px;padding:3px 6px}
-  .nav-sep{display:none}
-  .btn-ice,.btn-ghost{padding:10px 16px;font-size:10px}
+  .hud-nav-inner{padding:0 12px}
+  .hud-nav-links a{padding:0 10px;font-size:8px}
+  .hud-nav-mark{font-size:10px}
 }
 @media (prefers-reduced-motion:reduce){
-  .noise::before,.hero-grid::before{display:none}
-  .scrub-w{opacity:1!important}
+  .scanlines::before{display:none}
   *,*::before,*::after{animation-duration:0.01ms!important;transition-duration:0.01ms!important}
   html{scroll-behavior:auto}
-  .rs,.ru{opacity:1;transform:none}
+  .e{opacity:1;transform:none}
 }
 </style>
 </head>
 <body>
 
-<!-- Noise grain overlay -->
-<div class="noise" aria-hidden="true"></div>
+<!-- Scanline overlay -->
+<div class="scanlines" aria-hidden="true"></div>
 
-<!-- Animated grid background -->
-<div class="hero-grid" aria-hidden="true"><div class="hero-grid-overlay"></div></div>
+<!-- HUD grid -->
+<div class="hud-grid" aria-hidden="true"></div>
 
-<!-- Ambient orbs -->
-<div class="orb orb-1" aria-hidden="true"></div>
-<div class="orb orb-2" aria-hidden="true"></div>
-<div class="orb orb-3" aria-hidden="true"></div>
+<!-- Ambients -->
+<div class="glow glow-1" aria-hidden="true"></div>
+<div class="glow glow-2" aria-hidden="true"></div>
 
-<a href="#main" class="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-[200] focus:px-4 focus:py-2 focus:bg-ice focus:text-dark-950 focus:text-xs focus:rounded">Skip to main</a>
+<a href="#main" class="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-[200] focus:px-4 focus:py-2 focus:bg-c focus:text-black focus:text-xs">Skip to main</a>
 
-<!-- ═══ NAV — Fluid Island (21st.dev Nav pattern) ═══ -->
-<nav class="nav-island" role="navigation" aria-label="Primary">
-  <a href="#" class="nav-logo" aria-label="Home">JT</a>
-  <span class="nav-sep" aria-hidden="true"></span>
-  <a href="#about" class="nav-link" data-s="about">About<span class="nav-indicator"></span></a>
-  <a href="#projects" class="nav-link" data-s="projects">Work<span class="nav-indicator"></span></a>
-  <a href="#stack" class="nav-link" data-s="stack">Stack<span class="nav-indicator"></span></a>
-  <a href="#contact" class="nav-link" data-s="contact">Contact<span class="nav-indicator"></span></a>
+<!-- ═══ HUD NAV ═══ -->
+<nav class="hud-nav" role="navigation" aria-label="Primary">
+  <div class="hud-nav-inner">
+    <a href="#" class="hud-nav-mark" aria-label="Home">JT_</a>
+    <div class="hud-nav-links">
+      <a href="#about" data-s="about">About</a>
+      <a href="#projects" data-s="projects">Work</a>
+      <a href="#stack" data-s="stack">Stack</a>
+      <a href="#contact" data-s="contact">Contact</a>
+    </div>
+  </div>
 </nav>
 
-<main id="main" class="relative z-10">
+<main id="main" class="relative z-10 pt-11">
 
-<!-- ═══ HERO — Asymmetric (21st.dev staggered pattern) ═══ -->
+<!-- ═══ HERO ═══ -->
 <section class="min-h-[100dvh] flex items-center px-4 relative" aria-label="Introduction">
-  <div class="w-full max-w-6xl mx-auto grid md:grid-cols-5 gap-8 items-center">
-    <div class="md:col-span-3 pt-16 md:pt-0">
-      <div class="flex items-center gap-2 text-[9px] text-dark-400 tracking-[0.12em] mb-4 rs" style="font-family:'JetBrains Mono',monospace">
-        <span class="w-5 h-px bg-ice/20"></span>
-        <span>Legazpi City, PH · UTC+8</span>
-        <span class="w-1 h-1 rounded-full bg-ice/20"></span>
-        <span class="text-dark-500">v5.21st</span>
+  <div class="w-full max-w-5xl mx-auto grid lg:grid-cols-5 gap-8 items-center pt-10">
+    <div class="lg:col-span-3">
+      <div class="flex items-center gap-2 text-[9px] text-dk-600 tracking-[0.12em] mb-5 e">
+        <span class="inline-block w-4 h-px bg-c/20"></span>
+        <span>SYS::LOC → Legazpi, PH</span>
+        <span class="w-1 h-1 rounded-full bg-c/20"></span>
+        <span>UTC+8</span>
       </div>
 
-      <!-- Name with gradient text (21st.dev hero pattern) -->
-      <h1 class="text-[clamp(2.8rem,6.5vw,5.5rem)] font-extrabold leading-[0.98] tracking-tight mb-1">
-        <span class="rs block text-white">Joseph</span>
-        <span class="rs block mt-[-0.03em]">
-          <span class="gradient-text">Trilles</span>
-        </span>
+      <h1 class="text-[clamp(2.6rem,6vw,5rem)] font-bold leading-[0.96] tracking-[-0.02em] mb-2">
+        <span class="text-white e block">Joseph</span>
+        <span class="text-white e block mt-[-0.02em]">Trilles</span>
       </h1>
 
-      <div class="rs flex items-center gap-2 flex-wrap text-[clamp(1rem,1.8vw,1.3rem)] font-medium text-dark-300 mb-3" style="font-family:'JetBrains Mono',monospace">
-        <span>Gov ops</span>
-        <span class="text-dark-500">×</span>
-        <span>AI engineer</span>
-        <span class="text-dark-500">·</span>
-        <span>Comp Eng</span>
+      <div class="e flex items-center gap-2 text-sm text-dk-400 mb-3">
+        <span class="text-c">◈</span>
+        <span>GOV_OPS</span>
+        <span class="text-dk-600">::</span>
+        <span>AI_ENGINEER</span>
+        <span class="text-dk-600">::</span>
+        <span>COMP_ENG</span>
       </div>
 
-      <p class="rs text-sm text-dark-300 max-w-xl leading-relaxed mb-1">
-        <span class="text-ice/40" style="font-family:'JetBrains Mono',monospace">$</span>
-        Computer engineer with a decade in government ICT, now building autonomous agent systems that run 24/7.
-      </p>
-      <p class="rs text-xs text-dark-400 max-w-lg mb-5" style="font-family:'JetBrains Mono',monospace">
-        Hermes operator · DeepSeek / Gemini / Claude / Codex · LOKI ecosystem
+      <p class="e text-xs text-dk-500 max-w-lg leading-relaxed mb-6">
+        Computer engineer, 10yr gov ICT, operating LOKI — a 24/7 autonomous
+        AI agent ecosystem from Legazpi City.
       </p>
 
-      <div class="rs flex flex-wrap gap-2 mb-5">
-        <span class="tag">AI automation</span>
-        <span class="tag">LLM orchestration</span>
-        <span class="tag">Gov ICT</span>
-        <span class="tag">Bicol, PH</span>
+      <div class="e flex flex-wrap gap-2 mb-8">
+        <span class="hud-tag">AI Automation</span>
+        <span class="hud-tag">LLM Orchestration</span>
+        <span class="hud-tag">Gov ICT</span>
+        <span class="hud-tag">Bicol, PH</span>
       </div>
 
-      <div class="rs flex flex-wrap gap-3">
-        <a href="#projects" class="btn-ice magnetic-btn">
-          <span>View work</span>
-          <span class="ic-w" aria-hidden="true">→</span>
+      <div class="e flex flex-wrap gap-3">
+        <a href="#projects" class="btn-hud" data-magnetic>
+          <span>View Work</span>
+          <span>▸</span>
         </a>
-        <a href="#contact" class="btn-ghost magnetic-btn">Reach out</a>
+        <a href="#contact" class="btn-hud-s" data-magnetic>Reach Out</a>
       </div>
     </div>
 
-    <!-- Right: Terminal visual -->
-    <div class="md:col-span-2 hidden md:flex items-center justify-center rs">
-      <div class="bezel-outer w-full max-w-sm">
-        <div class="bezel-inner p-4">
-          <div class="space-y-2 text-[9px]" style="font-family:'JetBrains Mono',monospace">
-            <div class="flex items-center gap-2 text-dark-500">
-              <span class="w-2 h-2 rounded-full bg-ice/50"></span>
-              <span class="w-2 h-2 rounded-full bg-dark-600"></span>
-              <span class="w-2 h-2 rounded-full bg-dark-600"></span>
-              <span class="ml-auto text-dark-500">loki@hermes:~$</span>
+    <div class="lg:col-span-2 hidden lg:flex items-center justify-center">
+      <div class="e hud-corner w-full">
+        <div class="hud-panel">
+          <div class="space-y-2.5 text-[9px]">
+            <div class="flex items-center gap-2">
+              <span class="w-2 h-2 bg-c/50"></span>
+              <span class="text-dk-500">● loki@josephos:~$</span>
             </div>
-            <div class="text-dark-300"><span class="text-ice/50">$</span> whoami</div>
-            <div class="text-dark-200">Joseph Trilles · AI Engineer</div>
-            <div class="text-dark-300 mt-1"><span class="text-ice/50">$</span> uptime</div>
-            <div class="text-dark-200">10 yr gov ICT · 7 agents active</div>
-            <div class="text-dark-300 mt-1"><span class="text-ice/50">$</span> systemctl status loki</div>
-            <div class="text-ice/70">● loki.service — LOKI AI Operating System</div>
-            <div class="text-dark-400 pl-4">Active: running since 2024-12</div>
-            <div class="text-dark-400 pl-4">Agents: 7 · Workflows: 24</div>
-            <div class="flex items-center gap-1.5 mt-2 pt-2 border-t border-dark-700">
-              <span class="w-1.5 h-1.5 rounded-full bg-ice animate-glow"></span>
-              <span class="text-ice/40">Status: operational</span>
+            <div class="text-dk-400"><span class="text-c/60">◈</span> whoami</div>
+            <div class="text-dk-200">Joseph Trilles · AI Engineer</div>
+            <div class="text-dk-400 mt-1"><span class="text-c/60">◈</span> uptime</div>
+            <div class="text-dk-200">10yr gov ICT · 7 agents active</div>
+            <div class="text-dk-400 mt-1"><span class="text-c/60">◈</span> systemctl status loki</div>
+            <div class="text-c/80">● loki.service — LOKI AI OS [RUNNING]</div>
+            <div class="text-dk-500 pl-4">since 2024-12 · agents: 7 · wf: 24</div>
+            <div class="flex items-center gap-2 mt-2 pt-2 border-t border-dk-700">
+              <span class="w-1.5 h-1.5 bg-c"></span>
+              <span class="text-c/50">STATUS: OPERATIONAL</span>
             </div>
           </div>
         </div>
@@ -441,337 +362,333 @@ body{
   </div>
 </section>
 
-<!-- ═══ MARQUEE ═══ -->
-<section class="py-5 overflow-hidden" aria-label="Technologies">
+<!-- ═══ MARQUEE BAND ═══ -->
+<section class="border-y border-dk-700 py-4 overflow-hidden" aria-label="Technologies">
   <div class="m-track">
-    <div class="m-inner text-[10px] text-dark-500 tracking-[0.15em] uppercase" style="font-family:'JetBrains Mono',monospace">
-      <span>Hermes Agent</span><span class="text-ice/10">✦</span>
-      <span>DeepSeek</span><span class="text-ice/10">✦</span>
-      <span>Gemini</span><span class="text-ice/10">✦</span>
-      <span>Claude</span><span class="text-ice/10">✦</span>
-      <span>Codex CLI</span><span class="text-ice/10">✦</span>
-      <span>n8n</span><span class="text-ice/10">✦</span>
-      <span>Python</span><span class="text-ice/10">✦</span>
-      <span>React</span><span class="text-ice/10">✦</span>
-      <span>Tailwind</span><span class="text-ice/10">✦</span>
-      <span>Obsidian</span><span class="text-ice/10">✦</span>
-      <span>GSAP</span><span class="text-ice/10">✦</span>
-      <span>SQL</span><span class="text-ice/10">✦</span>
-      <span>Qwen</span><span class="text-ice/10">✦</span>
-      <span>DSPy</span><span class="text-ice/10">✦</span>
-      <span>Groq</span>
+    <div class="m-inner text-[9px] text-dk-600 tracking-[0.15em] uppercase">
+      <span class="text-c/40">◈</span>
+      <span>Hermes Agent</span><span class="text-dk-700">◆</span>
+      <span>DeepSeek</span><span class="text-dk-700">◆</span>
+      <span>Gemini</span><span class="text-dk-700">◆</span>
+      <span>Claude</span><span class="text-dk-700">◆</span>
+      <span>Codex CLI</span><span class="text-dk-700">◆</span>
+      <span>n8n</span><span class="text-dk-700">◆</span>
+      <span>Python</span><span class="text-dk-700">◆</span>
+      <span>React</span><span class="text-dk-700">◆</span>
+      <span>Tailwind</span><span class="text-dk-700">◆</span>
+      <span>Obsidian</span><span class="text-dk-700">◆</span>
+      <span>GSAP</span><span class="text-dk-700">◆</span>
+      <span>SQL</span><span class="text-dk-700">◆</span>
+      <span>Qwen</span><span class="text-dk-700">◆</span>
+      <span>DSPy</span><span class="text-dk-700">◆</span>
+      <span class="text-c/40">◈</span>
     </div>
   </div>
 </section>
 
-<!-- ═══ STATS ═══ -->
-<section class="border-y border-dark-700" aria-label="Metrics">
+<!-- ═══ HUD STATS ═══ -->
+<section aria-label="Metrics" class="border-b border-dk-700">
   <div class="max-w-4xl mx-auto">
-    <div class="grid grid-cols-2 sm:grid-cols-4 divide-x divide-dark-700">
-      <div class="py-5 px-4 text-center sc">
+    <div class="grid grid-cols-2 sm:grid-cols-4 divide-x divide-dk-700">
+      <div class="py-5 px-4 text-center s-anim">
         <div class="stat-n" data-t="10">0</div>
-        <p class="text-[9px] text-dark-500 leading-tight mt-1" style="font-family:'JetBrains Mono',monospace">Years gov ICT</p>
+        <p class="text-[8px] text-dk-600 mt-1 tracking-[0.12em]">● YEARS GOV ICT</p>
       </div>
-      <div class="py-5 px-4 text-center sc">
+      <div class="py-5 px-4 text-center s-anim">
         <div class="stat-n" data-t="24">0</div>
-        <p class="text-[9px] text-dark-500 leading-tight mt-1" style="font-family:'JetBrains Mono',monospace">Active workflows</p>
+        <p class="text-[8px] text-dk-600 mt-1 tracking-[0.12em]">● ACTIVE WORKFLOWS</p>
       </div>
-      <div class="py-5 px-4 text-center sc">
+      <div class="py-5 px-4 text-center s-anim">
         <div class="stat-n" data-t="7">0</div>
-        <p class="text-[9px] text-dark-500 leading-tight mt-1" style="font-family:'JetBrains Mono',monospace">AI agents running</p>
+        <p class="text-[8px] text-dk-600 mt-1 tracking-[0.12em]">● AI AGENTS LIVE</p>
       </div>
-      <div class="py-5 px-4 text-center sc">
+      <div class="py-5 px-4 text-center s-anim">
         <div class="stat-n" data-t="3">0</div>
-        <p class="text-[9px] text-dark-500 leading-tight mt-1" style="font-family:'JetBrains Mono',monospace">Gov systems built</p>
+        <p class="text-[8px] text-dk-600 mt-1 tracking-[0.12em]">● GOV SYSTEMS</p>
       </div>
     </div>
   </div>
 </section>
 
 <!-- ═══ ABOUT ═══ -->
-<section id="about" class="py-28 px-4" aria-label="About">
+<section id="about" class="py-24 px-4" aria-label="About">
   <div class="max-w-5xl mx-auto">
-    <span class="sec-eyebrow mb-5">About</span>
+    <span class="sec-hdr mb-6">SECTION::ABOUT</span>
 
-    <div class="grid md:grid-cols-5 gap-7 mt-2">
-      <div class="md:col-span-2 ru">
-        <h2 class="text-2xl md:text-3xl font-bold text-white leading-[1.08] tracking-tight mb-5">
-          Gov ops <span class="text-ice/50">×</span> AI<br />
-          <span class="gradient-text">one person ecosystem</span>
+    <div class="grid md:grid-cols-5 gap-8 mt-3">
+      <div class="md:col-span-2 e">
+        <h2 class="sec-title mb-5">
+          Gov Ops<br/>
+          <span class="text-c">× AI</span>
         </h2>
-        <div class="space-y-3 text-sm text-dark-300 leading-relaxed">
+        <div class="space-y-3 text-xs text-dk-400 leading-relaxed">
           <p>
-            Computer Engineer and Senior Tourism Operations Officer (SG-18) with a decade at the
-            Department of Tourism Region V. Lead ICT architect, built the award-winning
-            Exciting Bicol brand, and operate LOKI — an autonomous AI agent ecosystem
-            running across Hermes, Codex, Gemini, DeepSeek, and local models.
+            Computer Engineer and Senior Tourism Operations Officer with a
+            decade at the Department of Tourism Region V. Lead ICT architect,
+            built the award-winning Exciting Bicol brand, and operate LOKI —
+            an autonomous AI agent ecosystem running across Hermes, Codex,
+            Gemini, DeepSeek, and local models.
           </p>
-          <p class="text-dark-400 text-xs">
+          <p class="text-dk-600 text-[10px]">
             Transitioning to full-time remote AI engineering.
-            <span class="text-ice/60">Target: $4k–$8k/mo.</span>
+            <span class="text-c/60">Target: $4k–$8k/mo.</span>
           </p>
           <div class="flex flex-wrap gap-1.5 pt-1">
-            <span class="tag">DOT Region V</span>
-            <span class="tag">ICT Focal</span>
-            <span class="tag">DPO</span>
-            <span class="tag">Comp Eng</span>
+            <span class="hud-tag">DOT Region V</span>
+            <span class="hud-tag">ICT Focal</span>
+            <span class="hud-tag">DPO</span>
+            <span class="hud-tag">Comp Eng</span>
           </div>
         </div>
       </div>
 
-      <div class="md:col-span-3 grid grid-cols-2 gap-3 ru">
-        <div class="bezel-outer"><div class="bezel-inner">
-          <span class="text-[10px] font-semibold text-ice tracking-wide" style="font-family:'JetBrains Mono',monospace">AI / LLM</span>
-          <p class="text-[9px] text-dark-400 mt-2 leading-relaxed">DeepSeek, Gemini, Claude, Hermes Agent, Ollama, Qwen, DSPy, Groq</p>
-        </div></div>
-        <div class="bezel-outer"><div class="bezel-inner">
-          <span class="text-[10px] font-semibold text-ice tracking-wide" style="font-family:'JetBrains Mono',monospace">Automation</span>
-          <p class="text-[9px] text-dark-400 mt-2 leading-relaxed">n8n, cron, Composio, webhooks, GWS API, sub-agents, Discord bots</p>
-        </div></div>
-        <div class="bezel-outer"><div class="bezel-inner">
-          <span class="text-[10px] font-semibold text-ice tracking-wide" style="font-family:'JetBrains Mono',monospace">Web / Design</span>
-          <p class="text-[9px] text-dark-400 mt-2 leading-relaxed">React, Tailwind, GSAP, SEO, Figma, brand identity, Adobe Suite, drone</p>
-        </div></div>
-        <div class="bezel-outer"><div class="bezel-inner">
-          <span class="text-[10px] font-semibold text-ice tracking-wide" style="font-family:'JetBrains Mono',monospace">Systems</span>
-          <p class="text-[9px] text-dark-400 mt-2 leading-relaxed">Python, SQL, Docker, Linux, macOS, Google Cloud, Git, hardware build</p>
-        </div></div>
+      <div class="md:col-span-3 grid grid-cols-2 gap-3">
+        <div class="e hud-corner p-4 border border-dk-700" style="transition-delay:0.1s">
+          <span class="text-[9px] text-c tracking-[0.1em]"># AI / LLM</span>
+          <p class="text-[9px] text-dk-600 mt-2 leading-relaxed">DeepSeek, Gemini, Claude, Hermes, Ollama, Qwen, DSPy, Groq</p>
+        </div>
+        <div class="e hud-corner p-4 border border-dk-700" style="transition-delay:0.15s">
+          <span class="text-[9px] text-c tracking-[0.1em]"># Automation</span>
+          <p class="text-[9px] text-dk-600 mt-2 leading-relaxed">n8n, cron, Composio, webhooks, GWS API, sub-agents, Discord bots</p>
+        </div>
+        <div class="e hud-corner p-4 border border-dk-700" style="transition-delay:0.2s">
+          <span class="text-[9px] text-c tracking-[0.1em]"># Web / Design</span>
+          <p class="text-[9px] text-dk-600 mt-2 leading-relaxed">React, Tailwind, GSAP, SEO, Figma, brand identity, Adobe Suite, drone</p>
+        </div>
+        <div class="e hud-corner p-4 border border-dk-700" style="transition-delay:0.25s">
+          <span class="text-[9px] text-c tracking-[0.1em]"># Systems</span>
+          <p class="text-[9px] text-dk-600 mt-2 leading-relaxed">Python, SQL, Docker, Linux, macOS, Google Cloud, Git, hardware build</p>
+        </div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ═══ SCRUB TEXT ═══ -->
-<section class="py-36 px-4" aria-label="Philosophy">
+<div class="section-bar"></div>
+
+<!-- ═══ PHILOSOPHY (SCRUB TEXT) ═══ -->
+<section class="py-28 px-4" aria-label="Philosophy">
   <div class="max-w-5xl mx-auto">
-    <span class="sec-eyebrow mb-5">Philosophy</span>
-    <h2 class="text-[clamp(1.6rem,3.5vw,3rem)] font-bold text-white leading-[1.12] tracking-tight scrub-target">
-      I don't write code that sits idle.
-      <span class="text-ice/60">Every pipeline runs autonomously.</span>
-      Every agent has a job.
-      <span class="text-dark-400">Every minute is leveraged.</span>
+    <span class="sec-hdr mb-6">SECTION::MOTTO</span>
+    <h2 class="text-[clamp(1.2rem,2.5vw,2rem)] font-bold leading-[1.15] text-white/90 mt-3 scrub-target">
+      I don't write code that sits idle. Every pipeline runs autonomously.
+      Every agent has a job. Every minute is leveraged.
     </h2>
   </div>
 </section>
 
-<!-- ═══ PROJECTS ═══ -->
-<section id="projects" class="py-28 px-4" aria-label="Projects">
-  <div class="max-w-5xl mx-auto">
-    <span class="sec-eyebrow mb-5">Projects</span>
+<div class="section-bar"></div>
 
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-2.5 auto-rows-[200px] grid-flow-dense mt-2">
-      <!-- LOKI OS — Hero -->
-      <div class="pro-card md:col-span-2 md:row-span-2 group p-6 flex flex-col justify-between ru">
+<!-- ═══ PROJECTS ═══ -->
+<section id="projects" class="py-24 px-4" aria-label="Projects">
+  <div class="max-w-5xl mx-auto">
+    <span class="sec-hdr mb-6">SECTION::WORK</span>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-3 auto-rows-[180px] grid-flow-dense mt-3">
+      <!-- LOKI — Hero -->
+      <div class="pro-c-loki md:col-span-2 md:row-span-2 p-5 flex flex-col justify-between e">
         <div>
           <div class="flex items-center justify-between">
-            <span class="text-[8px] text-ice/40 tracking-[0.2em] uppercase" style="font-family:'JetBrains Mono',monospace">Flagship · 2025</span>
-            <span class="text-xs text-dark-500 group-hover:text-ice/40 transition-colors duration-500">↗</span>
+            <span class="text-[8px] text-c/50 tracking-[0.2em]">#FLAGSHIP_2025</span>
+            <span class="text-xs text-dk-600 group-hover:text-c/40 transition-colors">↗</span>
           </div>
-          <h3 class="text-sm sm:text-base font-bold text-white mt-2 mb-1.5">LOKI · AI Operating System</h3>
-          <p class="text-[11px] text-dark-400 leading-relaxed max-w-prose">
+          <h3 class="text-sm font-bold text-white mt-2 mb-1.5">LOKI · AI Operating System</h3>
+          <p class="text-[10px] text-dk-500 leading-relaxed max-w-prose">
             Daily AI operator: scheduled briefs, career scouting, health logging,
             staff monitoring, vault management, workflow execution across 7 agents
             with multi-LLM routing.
           </p>
         </div>
         <div class="flex flex-wrap gap-1 mt-2">
-          <span class="tag">Hermes Agent</span>
-          <span class="tag">DeepSeek</span>
-          <span class="tag">Cron 24/7</span>
-          <span class="tag">Obsidian</span>
+          <span class="hud-tag">Hermes Agent</span>
+          <span class="hud-tag">DeepSeek</span>
+          <span class="hud-tag">Cron 24/7</span>
+          <span class="hud-tag">Obsidian</span>
         </div>
       </div>
 
       <!-- KFX Dispatch -->
-      <div class="pro-card group flex flex-col ru">
-        <div class="pro-card-img" style="background-image:url('img/dispatch.jpg')"></div>
+      <div class="pro-c flex flex-col e" style="transition-delay:0.1s">
+        <div class="pro-c-img" style="background-image:url('img/dispatch.jpg')"></div>
         <div class="p-4 flex flex-col justify-between flex-1">
           <div>
-            <div class="flex items-center justify-between">
-              <span class="text-[8px] text-ice/30 tracking-[0.2em] uppercase" style="font-family:'JetBrains Mono',monospace">Tool · 2025</span>
-              <span class="text-xs text-dark-500 group-hover:text-ice/40 transition-colors duration-500">↗</span>
-            </div>
-            <h3 class="text-xs font-bold text-white mt-1 mb-0.5">KFX Dispatch</h3>
-            <p class="text-[10px] text-dark-400 leading-relaxed">Gmail, Calendar, Sheets → AI summary → Discord + archive</p>
+            <span class="text-[7px] text-c/40 tracking-[0.2em]">#TOOL_2025</span>
+            <h3 class="text-[11px] font-bold text-white mt-1 mb-0.5">KFX Dispatch</h3>
+            <p class="text-[9px] text-dk-500 leading-relaxed">Gmail + Calendar + Sheets → AI → Discord archive</p>
           </div>
-          <div class="flex flex-wrap gap-1 mt-2"><span class="tag">GWS</span><span class="tag">n8n</span><span class="tag">Discord</span></div>
+          <div class="flex flex-wrap gap-1 mt-2"><span class="hud-tag">GWS</span><span class="hud-tag">n8n</span><span class="hud-tag">Discord</span></div>
         </div>
       </div>
 
       <!-- Career GODMODE -->
-      <div class="pro-card group flex flex-col ru">
-        <div class="pro-card-img" style="background-image:url('img/career.jpg')"></div>
+      <div class="pro-c flex flex-col e" style="transition-delay:0.15s">
+        <div class="pro-c-img" style="background-image:url('img/career.jpg')"></div>
         <div class="p-4 flex flex-col justify-between flex-1">
           <div>
-            <div class="flex items-center justify-between">
-              <span class="text-[8px] text-ice/30 tracking-[0.2em] uppercase" style="font-family:'JetBrains Mono',monospace">Automation · 2025</span>
-              <span class="text-xs text-dark-500 group-hover:text-ice/40 transition-colors duration-500">↗</span>
-            </div>
-            <h3 class="text-xs font-bold text-white mt-1 mb-0.5">Career GODMODE</h3>
-            <p class="text-[10px] text-dark-400 leading-relaxed">Scout, score, package, draft, track · full job-search pipeline</p>
+            <span class="text-[7px] text-c/40 tracking-[0.2em]">#AUTOMATION_2025</span>
+            <h3 class="text-[11px] font-bold text-white mt-1 mb-0.5">Career GODMODE</h3>
+            <p class="text-[9px] text-dk-500 leading-relaxed">Scout + score + package + draft + track</p>
           </div>
-          <div class="flex flex-wrap gap-1 mt-2"><span class="tag">AI Scout</span><span class="tag">PDF Gen</span><span class="tag">Cron</span></div>
+          <div class="flex flex-wrap gap-1 mt-2"><span class="hud-tag">AI Scout</span><span class="hud-tag">PDF</span><span class="hud-tag">Cron</span></div>
         </div>
       </div>
 
       <!-- Exciting Bicol -->
-      <div class="pro-card group flex flex-col ru">
-        <div class="pro-card-img" style="background-image:url('img/bicol.jpg')"></div>
+      <div class="pro-c flex flex-col e" style="transition-delay:0.2s">
+        <div class="pro-c-img" style="background-image:url('img/bicol.jpg')"></div>
         <div class="p-4 flex flex-col justify-between flex-1">
           <div>
-            <div class="flex items-center justify-between">
-              <span class="text-[8px] text-ice/30 tracking-[0.2em] uppercase" style="font-family:'JetBrains Mono',monospace">Award · 2024</span>
-              <span class="text-xs text-dark-500 group-hover:text-ice/40 transition-colors duration-500">↗</span>
-            </div>
-            <h3 class="text-xs font-bold text-white mt-1 mb-0.5">Exciting Bicol</h3>
-            <p class="text-[10px] text-dark-400 leading-relaxed">TPB Best Regional Tourism Brand. Full visual identity + campaign</p>
+            <span class="text-[7px] text-c/40 tracking-[0.2em]">#AWARD_2024</span>
+            <h3 class="text-[11px] font-bold text-white mt-1 mb-0.5">Exciting Bicol</h3>
+            <p class="text-[9px] text-dk-500 leading-relaxed">TPB Best Regional Tourism Brand</p>
           </div>
-          <div class="flex flex-wrap gap-1 mt-2"><span class="tag">Identity</span><span class="tag">Award</span></div>
+          <div class="flex flex-wrap gap-1 mt-2"><span class="hud-tag">Identity</span><span class="hud-tag">Award</span></div>
         </div>
       </div>
 
-      <!-- DOT V Database -->
-      <div class="pro-card group flex flex-col ru">
-        <div class="pro-card-img" style="background-image:url('img/dotdb.jpg')"></div>
+      <!-- DOT Database -->
+      <div class="pro-c flex flex-col e" style="transition-delay:0.25s">
+        <div class="pro-c-img" style="background-image:url('img/dotdb.jpg')"></div>
         <div class="p-4 flex flex-col justify-between flex-1">
           <div>
-            <div class="flex items-center justify-between">
-              <span class="text-[8px] text-ice/30 tracking-[0.2em] uppercase" style="font-family:'JetBrains Mono',monospace">Enterprise · Live</span>
-              <span class="text-xs text-dark-500 group-hover:text-ice/40 transition-colors duration-500">↗</span>
-            </div>
-            <h3 class="text-xs font-bold text-white mt-1 mb-0.5">DOT V Database</h3>
-            <p class="text-[10px] text-dark-400 leading-relaxed">Accreditation, stats, training, finance · Phase III, LGU rollout</p>
+            <span class="text-[7px] text-c/40 tracking-[0.2em]">#ENTERPRISE_LIVE</span>
+            <h3 class="text-[11px] font-bold text-white mt-1 mb-0.5">DOT V Database</h3>
+            <p class="text-[9px] text-dk-500 leading-relaxed">Accreditation + stats + training + finance · Phase III</p>
           </div>
-          <div class="flex flex-wrap gap-1 mt-2"><span class="tag">Database</span><span class="tag">Gov</span><span class="tag">Full-stack</span></div>
+          <div class="flex flex-wrap gap-1 mt-2"><span class="hud-tag">Database</span><span class="hud-tag">Gov</span></div>
         </div>
       </div>
     </div>
   </div>
 </section>
 
+<div class="section-bar"></div>
+
 <!-- ═══ SCREENSHOTS ═══ -->
-<section class="py-28 px-4" aria-label="Live environment">
-  <div class="max-w-5xl mx-auto mb-5">
-    <span class="sec-eyebrow">In action</span>
+<section class="py-24 px-4" aria-label="Live environment">
+  <div class="max-w-5xl mx-auto mb-6">
+    <span class="sec-hdr">SECTION::LIVE</span>
   </div>
 
-  <div class="max-w-5xl mx-auto grid grid-cols-2 sm:grid-cols-4 gap-2.5">
-    <div class="ru"><div class="sshot" style="background-image:url('img/terminal.jpg')"></div><p class="text-[8px] text-dark-500 mt-1.5 text-center tracking-[0.1em]" style="font-family:'JetBrains Mono',monospace">Terminal · LOKI TUI</p></div>
-    <div class="ru"><div class="sshot" style="background-image:url('img/discord.jpg')"></div><p class="text-[8px] text-dark-500 mt-1.5 text-center tracking-[0.1em]" style="font-family:'JetBrains Mono',monospace">Gateway · Discord</p></div>
-    <div class="ru"><div class="sshot" style="background-image:url('img/obsidian.jpg')"></div><p class="text-[8px] text-dark-500 mt-1.5 text-center tracking-[0.1em]" style="font-family:'JetBrains Mono',monospace">Vault · Obsidian</p></div>
-    <div class="ru"><div class="sshot" style="background-image:url('img/dispatch.jpg')"></div><p class="text-[8px] text-dark-500 mt-1.5 text-center tracking-[0.1em]" style="font-family:'JetBrains Mono',monospace">Dispatch · KFX</p></div>
+  <div class="max-w-5xl mx-auto grid grid-cols-2 sm:grid-cols-4 gap-3">
+    <div class="e"><div class="sshot" style="background-image:url('img/terminal.jpg')"></div><p class="text-[7px] text-dk-600 mt-1.5 text-center tracking-[0.1em]">#TERMINAL_LOKI</p></div>
+    <div class="e" style="transition-delay:0.08s"><div class="sshot" style="background-image:url('img/discord.jpg')"></div><p class="text-[7px] text-dk-600 mt-1.5 text-center tracking-[0.1em]">#GATEWAY_DISCORD</p></div>
+    <div class="e" style="transition-delay:0.15s"><div class="sshot" style="background-image:url('img/obsidian.jpg')"></div><p class="text-[7px] text-dk-600 mt-1.5 text-center tracking-[0.1em]">#VAULT_OBSIDIAN</p></div>
+    <div class="e" style="transition-delay:0.2s"><div class="sshot" style="background-image:url('img/dispatch.jpg')"></div><p class="text-[7px] text-dk-600 mt-1.5 text-center tracking-[0.1em]">#DISPATCH_KFX</p></div>
   </div>
 </section>
 
-<!-- ═══ STACK + TIMELINE ═══ -->
-<section id="stack" class="py-28 px-4" aria-label="Stack and experience">
-  <div class="max-w-5xl mx-auto">
-    <span class="sec-eyebrow mb-5">Stack</span>
+<div class="section-bar"></div>
 
-    <div class="grid md:grid-cols-2 gap-10 mt-2">
+<!-- ═══ STACK ═══ -->
+<section id="stack" class="py-24 px-4" aria-label="Stack and experience">
+  <div class="max-w-5xl mx-auto">
+    <span class="sec-hdr mb-6">SECTION::STACK</span>
+
+    <div class="grid md:grid-cols-2 gap-10 mt-3">
       <!-- Skills -->
-      <div class="ru">
-        <h3 class="text-xs font-semibold text-white mb-5 tracking-wide" style="font-family:'JetBrains Mono',monospace">Proficiencies</h3>
+      <div>
+        <h3 class="text-[10px] font-bold text-white mb-5 tracking-[0.12em] uppercase">◆ Proficiencies</h3>
         <div class="space-y-4">
-          <div class="sg">
-            <div class="flex justify-between text-xs mb-1">
-              <span class="text-white/90">AI / LLM Orchestration</span>
-              <span class="text-ice/50 text-[10px]" style="font-family:'JetBrains Mono',monospace">Lv.95</span>
+          <div class="sg e">
+            <div class="flex justify-between text-[10px] mb-1">
+              <span class="text-white/80">AI / LLM Orchestration</span>
+              <span class="text-c/50">[95]</span>
             </div>
-            <div class="skill-track"><div class="skill-fill" data-w="95"></div></div>
+            <div class="meter-track"><div class="meter-fill" data-w="95"></div></div>
           </div>
-          <div class="sg">
-            <div class="flex justify-between text-xs mb-1">
-              <span class="text-white/90">Automation &amp; Pipelines</span>
-              <span class="text-ice/50 text-[10px]" style="font-family:'JetBrains Mono',monospace">Lv.92</span>
+          <div class="sg e" style="transition-delay:0.05s">
+            <div class="flex justify-between text-[10px] mb-1">
+              <span class="text-white/80">Automation &amp; Pipelines</span>
+              <span class="text-c/50">[92]</span>
             </div>
-            <div class="skill-track"><div class="skill-fill" data-w="92"></div></div>
+            <div class="meter-track"><div class="meter-fill" data-w="92"></div></div>
           </div>
-          <div class="sg">
-            <div class="flex justify-between text-xs mb-1">
-              <span class="text-white/90">Web Development</span>
-              <span class="text-ice/50 text-[10px]" style="font-family:'JetBrains Mono',monospace">Lv.85</span>
+          <div class="sg e" style="transition-delay:0.1s">
+            <div class="flex justify-between text-[10px] mb-1">
+              <span class="text-white/80">Web Development</span>
+              <span class="text-c/50">[85]</span>
             </div>
-            <div class="skill-track"><div class="skill-fill" data-w="85"></div></div>
+            <div class="meter-track"><div class="meter-fill" data-w="85"></div></div>
           </div>
-          <div class="sg">
-            <div class="flex justify-between text-xs mb-1">
-              <span class="text-white/90">Adobe &amp; Creative</span>
-              <span class="text-ice/50 text-[10px]" style="font-family:'JetBrains Mono',monospace">Lv.88</span>
+          <div class="sg e" style="transition-delay:0.15s">
+            <div class="flex justify-between text-[10px] mb-1">
+              <span class="text-white/80">Adobe &amp; Creative</span>
+              <span class="text-c/50">[88]</span>
             </div>
-            <div class="skill-track"><div class="skill-fill" data-w="88"></div></div>
+            <div class="meter-track"><div class="meter-fill" data-w="88"></div></div>
           </div>
-          <div class="sg">
-            <div class="flex justify-between text-xs mb-1">
-              <span class="text-white/90">Database &amp; SQL</span>
-              <span class="text-ice/50 text-[10px]" style="font-family:'JetBrains Mono',monospace">Lv.78</span>
+          <div class="sg e" style="transition-delay:0.2s">
+            <div class="flex justify-between text-[10px] mb-1">
+              <span class="text-white/80">Database &amp; SQL</span>
+              <span class="text-c/50">[78]</span>
             </div>
-            <div class="skill-track"><div class="skill-fill" data-w="78"></div></div>
+            <div class="meter-track"><div class="meter-fill" data-w="78"></div></div>
           </div>
-          <div class="sg">
-            <div class="flex justify-between text-xs mb-1">
-              <span class="text-white/90">Project Leadership</span>
-              <span class="text-ice/50 text-[10px]" style="font-family:'JetBrains Mono',monospace">Lv.82</span>
+          <div class="sg e" style="transition-delay:0.25s">
+            <div class="flex justify-between text-[10px] mb-1">
+              <span class="text-white/80">Project Leadership</span>
+              <span class="text-c/50">[82]</span>
             </div>
-            <div class="skill-track"><div class="skill-fill" data-w="82"></div></div>
+            <div class="meter-track"><div class="meter-fill" data-w="82"></div></div>
           </div>
         </div>
 
-        <h3 class="text-xs font-semibold text-white mt-8 mb-3 tracking-wide" style="font-family:'JetBrains Mono',monospace">Technologies</h3>
-        <div class="grid grid-cols-3 gap-1.5 tg">
-          <div class="flex items-center gap-2 px-3 py-2 border border-white/5 rounded-lg bg-white/[0.01] text-[10px] text-dark-300 hover:border-ice/10 transition-all duration-400" style="font-family:'JetBrains Mono',monospace"><span class="w-1 h-1 rounded-full bg-ice/40 shrink-0"></span>Hermes</div>
-          <div class="flex items-center gap-2 px-3 py-2 border border-white/5 rounded-lg bg-white/[0.01] text-[10px] text-dark-300 hover:border-ice/10 transition-all duration-400" style="font-family:'JetBrains Mono',monospace"><span class="w-1 h-1 rounded-full bg-ice/40 shrink-0"></span>DeepSeek</div>
-          <div class="flex items-center gap-2 px-3 py-2 border border-white/5 rounded-lg bg-white/[0.01] text-[10px] text-dark-300 hover:border-ice/10 transition-all duration-400" style="font-family:'JetBrains Mono',monospace"><span class="w-1 h-1 rounded-full bg-ice/40 shrink-0"></span>Gemini</div>
-          <div class="flex items-center gap-2 px-3 py-2 border border-white/5 rounded-lg bg-white/[0.01] text-[10px] text-dark-300 hover:border-ice/10 transition-all duration-400" style="font-family:'JetBrains Mono',monospace"><span class="w-1 h-1 rounded-full bg-ice/40 shrink-0"></span>Claude</div>
-          <div class="flex items-center gap-2 px-3 py-2 border border-white/5 rounded-lg bg-white/[0.01] text-[10px] text-dark-300 hover:border-ice/10 transition-all duration-400" style="font-family:'JetBrains Mono',monospace"><span class="w-1 h-1 rounded-full bg-ice/40 shrink-0"></span>Codex</div>
-          <div class="flex items-center gap-2 px-3 py-2 border border-white/5 rounded-lg bg-white/[0.01] text-[10px] text-dark-300 hover:border-ice/10 transition-all duration-400" style="font-family:'JetBrains Mono',monospace"><span class="w-1 h-1 rounded-full bg-ice/40 shrink-0"></span>Obsidian</div>
-          <div class="flex items-center gap-2 px-3 py-2 border border-white/5 rounded-lg bg-white/[0.01] text-[10px] text-dark-300 hover:border-ice/10 transition-all duration-400" style="font-family:'JetBrains Mono',monospace"><span class="w-1 h-1 rounded-full bg-ice/40 shrink-0"></span>n8n</div>
-          <div class="flex items-center gap-2 px-3 py-2 border border-white/5 rounded-lg bg-white/[0.01] text-[10px] text-dark-300 hover:border-ice/10 transition-all duration-400" style="font-family:'JetBrains Mono',monospace"><span class="w-1 h-1 rounded-full bg-ice/40 shrink-0"></span>React</div>
-          <div class="flex items-center gap-2 px-3 py-2 border border-white/5 rounded-lg bg-white/[0.01] text-[10px] text-dark-300 hover:border-ice/10 transition-all duration-400" style="font-family:'JetBrains Mono',monospace"><span class="w-1 h-1 rounded-full bg-ice/40 shrink-0"></span>Tailwind</div>
-          <div class="flex items-center gap-2 px-3 py-2 border border-white/5 rounded-lg bg-white/[0.01] text-[10px] text-dark-300 hover:border-ice/10 transition-all duration-400" style="font-family:'JetBrains Mono',monospace"><span class="w-1 h-1 rounded-full bg-ice/40 shrink-0"></span>Python</div>
-          <div class="flex items-center gap-2 px-3 py-2 border border-white/5 rounded-lg bg-white/[0.01] text-[10px] text-dark-300 hover:border-ice/10 transition-all duration-400" style="font-family:'JetBrains Mono',monospace"><span class="w-1 h-1 rounded-full bg-ice/40 shrink-0"></span>GSAP</div>
-          <div class="flex items-center gap-2 px-3 py-2 border border-white/5 rounded-lg bg-white/[0.01] text-[10px] text-dark-300 hover:border-ice/10 transition-all duration-400" style="font-family:'JetBrains Mono',monospace"><span class="w-1 h-1 rounded-full bg-ice/40 shrink-0"></span>SQL</div>
+        <h3 class="text-[10px] font-bold text-white mt-8 mb-3 tracking-[0.12em] uppercase">◆ Technologies</h3>
+        <div class="grid grid-cols-3 gap-1.5">
+          <div class="flex items-center gap-1.5 px-2.5 py-2 border border-dk-700 text-[9px] text-dk-500 hover:border-c/10 transition-colors"><span class="w-1 h-1 bg-c/40"></span>Hermes</div>
+          <div class="flex items-center gap-1.5 px-2.5 py-2 border border-dk-700 text-[9px] text-dk-500 hover:border-c/10 transition-colors"><span class="w-1 h-1 bg-c/40"></span>DeepSeek</div>
+          <div class="flex items-center gap-1.5 px-2.5 py-2 border border-dk-700 text-[9px] text-dk-500 hover:border-c/10 transition-colors"><span class="w-1 h-1 bg-c/40"></span>Gemini</div>
+          <div class="flex items-center gap-1.5 px-2.5 py-2 border border-dk-700 text-[9px] text-dk-500 hover:border-c/10 transition-colors"><span class="w-1 h-1 bg-c/40"></span>Claude</div>
+          <div class="flex items-center gap-1.5 px-2.5 py-2 border border-dk-700 text-[9px] text-dk-500 hover:border-c/10 transition-colors"><span class="w-1 h-1 bg-c/40"></span>Codex</div>
+          <div class="flex items-center gap-1.5 px-2.5 py-2 border border-dk-700 text-[9px] text-dk-500 hover:border-c/10 transition-colors"><span class="w-1 h-1 bg-c/40"></span>Obsidian</div>
+          <div class="flex items-center gap-1.5 px-2.5 py-2 border border-dk-700 text-[9px] text-dk-500 hover:border-c/10 transition-colors"><span class="w-1 h-1 bg-c/40"></span>n8n</div>
+          <div class="flex items-center gap-1.5 px-2.5 py-2 border border-dk-700 text-[9px] text-dk-500 hover:border-c/10 transition-colors"><span class="w-1 h-1 bg-c/40"></span>React</div>
+          <div class="flex items-center gap-1.5 px-2.5 py-2 border border-dk-700 text-[9px] text-dk-500 hover:border-c/10 transition-colors"><span class="w-1 h-1 bg-c/40"></span>Tailwind</div>
+          <div class="flex items-center gap-1.5 px-2.5 py-2 border border-dk-700 text-[9px] text-dk-500 hover:border-c/10 transition-colors"><span class="w-1 h-1 bg-c/40"></span>Python</div>
+          <div class="flex items-center gap-1.5 px-2.5 py-2 border border-dk-700 text-[9px] text-dk-500 hover:border-c/10 transition-colors"><span class="w-1 h-1 bg-c/40"></span>GSAP</div>
+          <div class="flex items-center gap-1.5 px-2.5 py-2 border border-dk-700 text-[9px] text-dk-500 hover:border-c/10 transition-colors"><span class="w-1 h-1 bg-c/40"></span>SQL</div>
         </div>
       </div>
 
       <!-- Timeline -->
-      <div class="ru">
-        <h3 class="text-xs font-semibold text-white mb-5 tracking-wide" style="font-family:'JetBrains Mono',monospace">History</h3>
+      <div>
+        <h3 class="text-[10px] font-bold text-white mb-5 tracking-[0.12em] uppercase">◆ History</h3>
         <div class="flex flex-col">
-          <div class="flex gap-3 ti">
-            <div class="flex flex-col items-center pt-0.5"><div class="t-dot"></div><div class="t-line"></div></div>
+          <div class="flex gap-3 ti e">
+            <div class="flex flex-col items-center pt-0.5"><div class="td"></div><div class="tl"></div></div>
             <div class="pb-6">
-              <span class="text-[8px] text-ice/40 tracking-[0.18em] uppercase" style="font-family:'JetBrains Mono',monospace">Dec 2024 · Present</span>
-              <h4 class="text-xs font-bold text-white mt-0.5">Senior Tourism Operations Officer (SG-18)</h4>
-              <p class="text-[10px] text-dark-500">DOT Region V · Unit Head, Product &amp; Market Development</p>
-              <p class="text-[10px] text-dark-400 mt-0.5">ICT Focal, DPO, Database Lead, 5-person unit</p>
+              <span class="text-[7px] text-c/40 tracking-[0.18em]">#DEC_2024_NOW</span>
+              <h4 class="text-[11px] font-bold text-white mt-0.5">Senior Tourism Operations Officer (SG-18)</h4>
+              <p class="text-[9px] text-dk-600">DOT Region V · Unit Head, Product &amp; Market Development</p>
+              <p class="text-[9px] text-dk-600 mt-0.5">ICT Focal, DPO, Database Lead, 5-person unit</p>
             </div>
           </div>
-          <div class="flex gap-3 ti">
-            <div class="flex flex-col items-center pt-0.5"><div class="t-dot"></div><div class="t-line"></div></div>
+          <div class="flex gap-3 ti e" style="transition-delay:0.08s">
+            <div class="flex flex-col items-center pt-0.5"><div class="td"></div><div class="tl"></div></div>
             <div class="pb-6">
-              <span class="text-[8px] text-ice/40 tracking-[0.18em] uppercase" style="font-family:'JetBrains Mono',monospace">Jan 2019 · Dec 2024</span>
-              <h4 class="text-xs font-bold text-white mt-0.5">Tourism Operations Officer</h4>
-              <p class="text-[10px] text-dark-500">DOT Region V · Product &amp; Market Development</p>
-              <p class="text-[10px] text-dark-400 mt-0.5">Created Exciting Bicol · TPB Best Regional Tourism Brand</p>
+              <span class="text-[7px] text-c/40 tracking-[0.18em]">#JAN_2019_DEC_2024</span>
+              <h4 class="text-[11px] font-bold text-white mt-0.5">Tourism Operations Officer</h4>
+              <p class="text-[9px] text-dk-600">DOT Region V · Product &amp; Market Development</p>
+              <p class="text-[9px] text-dk-600 mt-0.5">Created Exciting Bicol · TPB Best Regional Tourism Brand</p>
             </div>
           </div>
-          <div class="flex gap-3 ti">
-            <div class="flex flex-col items-center pt-0.5"><div class="t-dot"></div><div class="t-line"></div></div>
+          <div class="flex gap-3 ti e" style="transition-delay:0.15s">
+            <div class="flex flex-col items-center pt-0.5"><div class="td"></div><div class="tl"></div></div>
             <div class="pb-6">
-              <span class="text-[8px] text-ice/40 tracking-[0.18em] uppercase" style="font-family:'JetBrains Mono',monospace">Nov 2014 · Jan 2019</span>
-              <h4 class="text-xs font-bold text-white mt-0.5">Administrative Aide IV</h4>
-              <p class="text-[10px] text-dark-500">DOT Region V · ICT, Design &amp; Operations</p>
-              <p class="text-[10px] text-dark-400 mt-0.5">Web dev, database admin, graphic design, event support</p>
+              <span class="text-[7px] text-c/40 tracking-[0.18em]">#NOV_2014_JAN_2019</span>
+              <h4 class="text-[11px] font-bold text-white mt-0.5">Administrative Aide IV</h4>
+              <p class="text-[9px] text-dk-600">DOT Region V · ICT, Design &amp; Operations</p>
+              <p class="text-[9px] text-dk-600 mt-0.5">Web dev, database admin, graphic design, event support</p>
             </div>
           </div>
-          <div class="flex gap-3 ti">
-            <div class="flex flex-col items-center pt-0.5"><div class="t-dot"></div></div>
+          <div class="flex gap-3 ti e" style="transition-delay:0.2s">
+            <div class="flex flex-col items-center pt-0.5"><div class="td"></div></div>
             <div>
-              <span class="text-[8px] text-ice/40 tracking-[0.18em] uppercase" style="font-family:'JetBrains Mono',monospace">2024 · Present</span>
-              <h4 class="text-xs font-bold text-white mt-0.5">AI Automation Builder</h4>
-              <p class="text-[10px] text-dark-500">Hermes / KFX / JosephOS</p>
-              <p class="text-[10px] text-dark-400 mt-0.5">AI workflows for business ops, productivity, career, health</p>
+              <span class="text-[7px] text-c/40 tracking-[0.18em]">#2024_NOW</span>
+              <h4 class="text-[11px] font-bold text-white mt-0.5">AI Automation Builder</h4>
+              <p class="text-[9px] text-dk-600">Hermes / KFX / JosephOS</p>
+              <p class="text-[9px] text-dk-600 mt-0.5">AI workflows for business ops, productivity, career, health</p>
             </div>
           </div>
         </div>
@@ -780,60 +697,64 @@ body{
   </div>
 </section>
 
+<div class="section-bar"></div>
+
 <!-- ═══ CREDENTIALS ═══ -->
-<section class="py-24 px-4" aria-label="Credentials">
+<section class="py-20 px-4" aria-label="Credentials">
   <div class="max-w-5xl mx-auto">
-    <span class="sec-eyebrow mb-5">Credentials</span>
-    <div class="grid sm:grid-cols-3 gap-3 mt-2">
-      <div class="bezel-outer"><div class="bezel-inner p-5">
-        <span class="text-[11px] font-semibold text-ice" style="font-family:'JetBrains Mono',monospace">BS Comp. Engineering</span>
-        <p class="text-[10px] text-dark-500 mt-1.5">AMA Computer University · 2009–2015</p>
-        <p class="text-[10px] text-dark-400 mt-1">Systems design, programming foundations</p>
-      </div></div>
-      <div class="bezel-outer"><div class="bezel-inner p-5">
-        <span class="text-[11px] font-semibold text-ice" style="font-family:'JetBrains Mono',monospace">Career Service Professional</span>
-        <p class="text-[10px] text-dark-500 mt-1.5">Civil Service Commission · 81.74% (2013)</p>
-        <p class="text-[10px] text-dark-400 mt-1">Philippine civil service eligibility</p>
-      </div></div>
-      <div class="bezel-outer"><div class="bezel-inner p-5">
-        <span class="text-[11px] font-semibold text-ice" style="font-family:'JetBrains Mono',monospace">Google PM Certificate</span>
-        <p class="text-[10px] text-dark-500 mt-1.5">DICT Scholarship · 2023</p>
-        <p class="text-[10px] text-dark-400 mt-1">Project management, agile, stakeholder coordination</p>
-      </div></div>
+    <span class="sec-hdr mb-6">SECTION::CREDENTIALS</span>
+    <div class="grid sm:grid-cols-3 gap-3 mt-3">
+      <div class="e p-5 border border-dk-700">
+        <span class="text-[10px] font-bold text-c">BS Comp. Engineering</span>
+        <p class="text-[9px] text-dk-600 mt-1.5">AMA Computer University · 2009–2015</p>
+        <p class="text-[9px] text-dk-600 mt-1">Systems design, programming foundations</p>
+      </div>
+      <div class="e p-5 border border-dk-700" style="transition-delay:0.1s">
+        <span class="text-[10px] font-bold text-c">Career Service Professional</span>
+        <p class="text-[9px] text-dk-600 mt-1.5">Civil Service Commission · 81.74% (2013)</p>
+        <p class="text-[9px] text-dk-600 mt-1">Philippine civil service eligibility</p>
+      </div>
+      <div class="e p-5 border border-dk-700" style="transition-delay:0.15s">
+        <span class="text-[10px] font-bold text-c">Google PM Certificate</span>
+        <p class="text-[9px] text-dk-600 mt-1.5">DICT Scholarship · 2023</p>
+        <p class="text-[9px] text-dk-600 mt-1">Project management, agile, stakeholder coordination</p>
+      </div>
     </div>
   </div>
 </section>
 
-<!-- ═══ CONTACT ═══ -->
-<section id="contact" class="py-36 px-4" aria-label="Contact">
-  <div class="max-w-3xl mx-auto text-center">
-    <span class="sec-eyebrow justify-center mb-5">Contact</span>
+<div class="section-bar"></div>
 
-    <h2 class="text-2xl md:text-3xl font-bold mt-2 mb-3"><span class="gradient-text">Available for remote AI roles</span></h2>
-    <p class="text-sm text-dark-400 mb-8 max-w-sm mx-auto leading-relaxed">
-      Open to full-time AI engineering and automation consulting.<br />
-      <span style="font-family:'JetBrains Mono',monospace" class="text-xs">Legazpi City · UTC+8 · Remote only</span>
+<!-- ═══ CONTACT ═══ -->
+<section id="contact" class="py-32 px-4" aria-label="Contact">
+  <div class="max-w-3xl mx-auto text-center">
+    <span class="sec-hdr justify-center mb-6">SECTION::CONTACT</span>
+
+    <h2 class="text-[clamp(1.4rem,3vw,2.6rem)] font-bold mt-3 mb-3 text-white">Available for Remote AI Roles</h2>
+    <p class="text-xs text-dk-600 mb-10 max-w-sm mx-auto leading-relaxed">
+      Full-time AI engineering and automation consulting.<br/>
+      <span class="text-[9px]">Legazpi City · UTC+8 · Remote Only</span>
     </p>
 
     <div class="flex flex-wrap justify-center gap-4">
-      <a href="mailto:josephtrilles@gmail.com" class="btn-ice magnetic-btn" aria-label="Email">
+      <a href="mailto:josephtrilles@gmail.com" class="btn-hud" data-magnetic>
         <span>MAIL</span>
-        <span class="ic-w" aria-hidden="true">→</span>
+        <span>▸</span>
       </a>
-      <a href="https://linkedin.com/in/josephtrilles" target="_blank" rel="noopener" class="btn-ghost magnetic-btn">LINKEDIN</a>
-      <a href="https://github.com/jtrilles" target="_blank" rel="noopener" class="btn-ghost magnetic-btn">GITHUB</a>
+      <a href="https://linkedin.com/in/josephtrilles" target="_blank" rel="noopener" class="btn-hud-s" data-magnetic>LINKEDIN</a>
+      <a href="https://github.com/jtrilles" target="_blank" rel="noopener" class="btn-hud-s" data-magnetic>GITHUB</a>
     </div>
   </div>
 </section>
 
 </main>
 
-<footer class="py-5 px-4 border-t border-dark-700" role="contentinfo">
-  <div class="max-w-5xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-1 text-[9px] text-dark-500" style="font-family:'JetBrains Mono',monospace">
-    <span>© 2026 Joseph Trilles. Built with LOKI.</span>
+<footer class="py-5 px-4 border-t border-dk-700">
+  <div class="max-w-5xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-1 text-[8px] text-dk-700">
+    <span>© 2026 Joseph Trilles. RUNTIME::LOKI v5</span>
     <span class="flex items-center gap-1">
-      <span class="w-1.5 h-1.5 rounded-full bg-ice/30 animate-pulse"></span>
-      $ echo $LOCATION → Legazpi City, PH
+      <span class="w-1 h-1 bg-c/60"></span>
+      $ECHO $LOC → Legazpi, PH
     </span>
   </div>
 </footer>
@@ -842,24 +763,21 @@ body{
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
 <script>
 gsap.registerPlugin(ScrollTrigger);
-
 const rm = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 const cb = 'power3.out';
 const d = rm ? 0.01 : null;
 
-// ═══ STAGGERED ENTRY (21st.dev animated hero pattern) ═══
-gsap.to('.rs', {
-  y: 0, opacity: 1, duration: d || 0.6, stagger: 0.08, ease: cb,
-  scrollTrigger: { trigger: '.rs', start: 'top 95%', toggleActions: 'play none none none' }
+// ═══ ENTRY ANIMATIONS ═══
+gsap.to('.e', {
+  y: 0, opacity: 1, duration: d || 0.5, ease: cb, stagger: 0.04,
+  scrollTrigger: { trigger: '.e', start: 'top 95%', toggleActions: 'play none none none' }
+});
+gsap.to('.min-h-\\[100dvh\\] .e', {
+  y: 0, opacity: 1, duration: d || 0.5, stagger: 0.06, ease: cb
 });
 
-// Force hero rs to play immediately
-gsap.to('.min-h-\\[100dvh\\] .rs', {
-  y: 0, opacity: 1, duration: d || 0.55, stagger: 0.07, ease: cb
-});
-
-// ═══ STAT COUNTERS ═══
-document.querySelectorAll('.sc').forEach(c => {
+// ═══ STAT COUNTERS (HUD-style) ═══
+document.querySelectorAll('.s-anim').forEach(c => {
   const el = c.querySelector('.stat-n');
   const t = parseInt(el.dataset.t);
   ScrollTrigger.create({
@@ -874,11 +792,8 @@ document.querySelectorAll('.sc').forEach(c => {
   });
 });
 
-// ═══ REVEAL-UP ═══
-gsap.from('.ru', { y: 18, opacity: 0, duration: d || 0.45, ease: cb, stagger: 0.06, scrollTrigger: { trigger: '#about', start: 'top 85%' } });
-
-// ═══ SKILL BARS ═══
-document.querySelectorAll('.skill-fill').forEach(b => {
+// ═══ SKILL METERS ═══
+document.querySelectorAll('.meter-fill').forEach(b => {
   const w = b.dataset.w || 0;
   ScrollTrigger.create({
     trigger: b.closest('.sg'), start: 'top 92%', once: true,
@@ -886,39 +801,18 @@ document.querySelectorAll('.skill-fill').forEach(b => {
   });
 });
 
-// ═══ TECH GRID STAGGER ═══
-gsap.from('.tg > div', { y: 10, opacity: 0, duration: d || 0.3, stagger: 0.025, scrollTrigger: { trigger: '.tg', start: 'top 90%' } });
-
-// ═══ PROJECT CARDS ═══
-gsap.from('.pro-card', { y: 16, opacity: 0, duration: d || 0.4, ease: cb, stagger: 0.04, scrollTrigger: { trigger: '#projects', start: 'top 80%' } });
-
-// ═══ SCRUB TEXT ═══
-const st = document.querySelector('.scrub-target');
-if (st && !rm) {
-  const wds = st.textContent.split(' ');
-  st.innerHTML = '';
-  wds.forEach((w, i) => { const s = document.createElement('span'); s.className = 'scrub-w'; s.textContent = w; st.appendChild(s); });
-  const sa = st.querySelectorAll('.scrub-w');
-  ScrollTrigger.create({
-    trigger: st, start: 'top 75%', end: 'bottom 25%', scrub: 1.5,
-    onUpdate: self => {
-      sa.forEach((sw, i) => { const p = Math.min(1, Math.max(0.06, (self.progress - i / sa.length) / 0.25)); sw.style.opacity = p; });
-    }
-  });
-}
-
 // ═══ TIMELINE ═══
-gsap.from('.ti', { y: 12, opacity: 0, duration: d || 0.35, ease: cb, stagger: 0.07, scrollTrigger: { trigger: '.ti', start: 'top 88%' } });
+gsap.from('.ti', { y: 10, opacity: 0, duration: d || 0.3, ease: cb, stagger: 0.06, scrollTrigger: { trigger: '.ti', start: 'top 88%' } });
 
 // ═══ NAV HIGHLIGHT ═══
 const secs = document.querySelectorAll('section[id]');
-const nls = document.querySelectorAll('.nav-link');
+const nls = document.querySelectorAll('.hud-nav-links a');
 if (secs.length) {
   const obs = new IntersectionObserver(entries => {
     entries.forEach(e => {
       if (e.isIntersecting) {
         nls.forEach(l => l.classList.remove('active'));
-        const a = document.querySelector(`.nav-link[data-s="${e.target.id}"]`);
+        const a = document.querySelector(`.hud-nav-links a[data-s="${e.target.id}"]`);
         if (a) a.classList.add('active');
       }
     });
@@ -926,44 +820,20 @@ if (secs.length) {
   secs.forEach(s => obs.observe(s));
 }
 
-// ═══ CURSOR-FOLLOW GRADIENT ON CARDS (21st.dev Shader Card pattern) ═══
-document.querySelectorAll('.bezel-outer, .pro-card').forEach(card => {
-  card.addEventListener('mousemove', e => {
-    const r = card.getBoundingClientRect();
-    const x = ((e.clientX - r.left) / r.width) * 100;
-    const y = ((e.clientY - r.top) / r.height) * 100;
-    card.style.setProperty('--mx', x + '%');
-    card.style.setProperty('--my', y + '%');
-  });
-});
-
-// ═══ MAGNETIC BUTTON (21st.dev magnetic pattern) ═══
+// ═══ MAGNETIC BUTTONS ═══
 if (!rm) {
-  document.querySelectorAll('.magnetic-btn').forEach(btn => {
+  document.querySelectorAll('[data-magnetic]').forEach(btn => {
     btn.addEventListener('mousemove', e => {
       const r = btn.getBoundingClientRect();
-      const dx = (e.clientX - r.left - r.width / 2) * 0.15;
-      const dy = (e.clientY - r.top - r.height / 2) * 0.15;
+      const dx = (e.clientX - r.left - r.width / 2) * 0.2;
+      const dy = (e.clientY - r.top - r.height / 2) * 0.2;
       btn.style.transform = `translate(${dx}px, ${dy}px)`;
     });
-    btn.addEventListener('mouseleave', () => {
-      btn.style.transform = '';
-    });
+    btn.addEventListener('mouseleave', () => { btn.style.transform = ''; });
   });
 }
 
-// ═══ SCREENSHOT HOVER PHYSICS ═══
-document.querySelectorAll('.sshot').forEach(s => {
-  s.addEventListener('mousemove', e => {
-    const r = s.getBoundingClientRect();
-    const x = (e.clientX - r.left) / r.width - 0.5;
-    const y2 = (e.clientY - r.top) / r.height - 0.5;
-    s.style.transform = `scale(1.012) translate(${x*2}px, ${y2*2}px)`;
-  });
-  s.addEventListener('mouseleave', () => { s.style.transform = 'scale(1) translate(0,0)'; });
-});
-
-console.log('⚡ LOKI [21st.dev UPGRADE] — Portfolio v5.21st');
+console.log('⚡ LOKI [BF6 HUD] — Portfolio v6');
 </script>
 </body>
 </html>
