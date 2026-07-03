@@ -1,22 +1,23 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="dark">
+<html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Joseph Trilles — AI Engineer & Autonomous Operator</title>
-<meta name="description" content="Joseph Trilles builds autonomous AI agent ecosystems, automation pipelines, and knowledge workflows from Legazpi City, Philippines." />
-<meta name="theme-color" content="#050505" />
-<meta name="color-scheme" content="dark only" />
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Joseph Trilles — Gov Ops &times; AI Engineer</title>
+<meta name="description" content="Computer engineer building autonomous multi-agent systems from Legazpi City, Philippines. Gov ops turned AI operator.">
+<meta name="theme-color" content="#050505">
+<meta name="color-scheme" content="dark only">
 
-<link rel="preconnect" href="https://fonts.googleapis.com" />
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400&display=swap" rel="stylesheet" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,200;0,400;0,500;0,600;0,700;0,800;1,400&family=Satoshi:wght@400;500;700;900&display=swap" rel="stylesheet">
 <script src="https://cdn.tailwindcss.com"></script>
 <script>
 tailwind.config={
   theme:{
     extend:{
       fontFamily:{
+        display:['Satoshi','system-ui','sans-serif'],
         mono:['JetBrains Mono','SF Mono','monospace'],
       },
       colors:{
@@ -30,14 +31,17 @@ tailwind.config={
       },
       animation:{
         'blink':'blink 1s step-end infinite',
-        'pulse-soft':'pulse-soft 3s ease-in-out infinite'
+        'pulse-soft':'pulse-soft 3s ease-in-out infinite',
+        'marquee':'marquee 40s linear infinite',
+        'marquee2':'marquee2 40s linear infinite',
+        'float':'float 7s ease-in-out infinite',
       },
       keyframes:{
         blink:{'50%':{opacity:'0'}},
-        'pulse-soft':{
-          '0%,100%':{opacity:'0.3'},
-          '50%':{opacity:'0.7'}
-        }
+        'pulse-soft':{'0%,100%':{opacity:'0.3'},'50%':{opacity:'0.7'}},
+        marquee:{'0%':{transform:'translateX(0)'},'100%':{transform:'translateX(-100%)'}},
+        marquee2:{'0%':{transform:'translateX(100%)'},'100%':{transform:'translateX(0%)'}},
+        float:{'0%,100%':{transform:'translateY(0)'},'50%':{transform:'translateY(-8px)'}},
       }
     }
   }
@@ -45,89 +49,127 @@ tailwind.config={
 </script>
 <style>
 :root{color-scheme:dark}
-
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
 body{
   background:#050505;color:#c0c0c0;
-  font-family:'JetBrains Mono','SF Mono',monospace;
-  font-size:13px;line-height:1.6;
+  font-family:'Satoshi','system-ui',sans-serif;
+  font-size:14px;line-height:1.6;
   overflow-x:hidden;
   -webkit-font-smoothing:antialiased;
 }
-::selection{background:rgba(125,211,252,0.15);color:#fff}
+::selection{background:rgba(125,211,252,0.18);color:#fff}
 ::-webkit-scrollbar{width:3px}
 ::-webkit-scrollbar-track{background:#080808}
 ::-webkit-scrollbar-thumb{background:#383838;border-radius:2px}
 
-/* ── Grid Background ── */
+/* Grid bg */
 .grid-bg{
   position:fixed;inset:0;pointer-events:none;z-index:0;
   background-image:
-    linear-gradient(rgba(125,211,252,0.018)1px,transparent 1px),
-    linear-gradient(90deg,rgba(125,211,252,0.018)1px,transparent 1px);
+    linear-gradient(rgba(125,211,252,0.016)1px,transparent 1px),
+    linear-gradient(90deg,rgba(125,211,252,0.016)1px,transparent 1px);
   background-size:48px 48px;
 }
 
-/* ── Ambient Orbs ── */
+/* Ambient orbs */
 .orb-1{
-  position:fixed;top:-20vh;right:-15vw;
-  width:70vw;height:70vw;
-  background:radial-gradient(circle,rgba(125,211,252,0.03) 0%,transparent 60%);
+  position:fixed;top:-15vh;right:-12vw;
+  width:60vw;height:60vw;
+  background:radial-gradient(circle,rgba(125,211,252,0.025),transparent 60%);
+  pointer-events:none;z-index:0;
+}
+.orb-2{
+  position:fixed;bottom:-20vh;left:-8vw;
+  width:50vw;height:50vw;
+  background:radial-gradient(circle,rgba(125,211,252,0.015),transparent 60%);
   pointer-events:none;z-index:0;
 }
 
-/* ── Double-Bezel Cards ── */
-.bezel{
-  background:rgba(15,15,15,0.45);
+/* Fluid Island Nav */
+.nav-island{
+  position:fixed;top:16px;left:50%;transform:translateX(-50%);
+  z-index:100;
+  background:rgba(5,5,5,0.55);
+  backdrop-filter:blur(28px);
+  -webkit-backdrop-filter:blur(28px);
   border:1px solid rgba(255,255,255,0.04);
-  border-radius:1rem;
-  transition:all 0.45s cubic-bezier(0.22,1,0.36,1);
+  border-radius:999px;
+  padding:5px;
+  transition:border-color 0.5s cubic-bezier(0.32,0.72,0,1);
 }
-.bezel:hover{border-color:rgba(125,211,252,0.08);background:rgba(18,18,18,0.55)}
+.nav-island:hover{border-color:rgba(125,211,252,0.06)}
+.nav-link{
+  padding:7px 16px;font-size:10px;letter-spacing:0.06em;font-family:'JetBrains Mono','SF Mono',monospace;
+  color:#787878;text-decoration:none;border-radius:999px;
+  transition:all 0.35s cubic-bezier(0.32,0.72,0,1);
+  white-space:nowrap;
+}
+.nav-link:hover{color:#7dd3fc;background:rgba(125,211,252,0.04)}
+.nav-link.active{color:#7dd3fc;background:rgba(125,211,252,0.04)}
 
-/* ── Tag ── */
+/* Double-Bezel (Doppelrand) Architecture */
+.bezel-outer{
+  background:rgba(18,18,18,0.35);
+  border:1px solid rgba(255,255,255,0.04);
+  padding:1.5px;
+  border-radius:1.25rem;
+  transition:border-color 0.6s cubic-bezier(0.32,0.72,0,1);
+}
+.bezel-outer:hover{border-color:rgba(125,211,252,0.08)}
+.bezel-inner{
+  background:rgba(8,8,8,0.5);
+  backdrop-filter:blur(12px);
+  -webkit-backdrop-filter:blur(12px);
+  border-radius:calc(1.25rem - 1.5px);
+  padding:1.5rem;
+  height:100%;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,0.03);
+}
+
+/* Tag (mono) */
 .tag{
-  display:inline-flex;padding:2px 10px;
+  display:inline-flex;padding:2px 10px;font-family:'JetBrains Mono','SF Mono',monospace;
   border:1px solid rgba(125,211,252,0.06);
   background:rgba(125,211,252,0.02);
-  color:rgba(125,211,252,0.65);font-size:9px;
+  color:rgba(125,211,252,0.6);font-size:9px;
   letter-spacing:0.04em;text-transform:uppercase;
   line-height:1.8;border-radius:2px;
-  transition:all 0.25s;
+  transition:all 0.3s cubic-bezier(0.32,0.72,0,1);
 }
-.tag:hover{background:rgba(125,211,252,0.05);border-color:rgba(125,211,252,0.12)}
+.tag:hover{background:rgba(125,211,252,0.05);border-color:rgba(125,211,252,0.12);color:rgba(125,211,252,0.8)}
 
-/* ── Section number ── */
-.sec-num{
-  font-size:9px;letter-spacing:0.18em;color:rgba(125,211,252,0.2);
-  font-weight:400;
-  display:flex;align-items:center;gap:10px;
+/* Section heading w/ eyebrow line */
+.sec-eyebrow{
+  font-size:10px;letter-spacing:0.18em;color:rgba(125,211,252,0.2);
+  font-family:'JetBrains Mono','SF Mono',monospace;
+  font-weight:400;text-transform:uppercase;
+  display:flex;align-items:center;gap:12px;
 }
-.sec-num::after{
+.sec-eyebrow::after{
   content:'';flex:1;height:1px;
   background:linear-gradient(90deg,rgba(125,211,252,0.05),transparent);
 }
 
-/* ── Skill Bar ── */
-.skill-track{height:2px;background:rgba(125,211,252,0.03);border-radius:2px;overflow:hidden}
+/* Skill track (ultra-thin) */
+.skill-track{height:2px;background:rgba(125,211,252,0.025);border-radius:2px;overflow:hidden}
 .skill-fill{
   height:100%;
   background:linear-gradient(90deg,#7dd3fc,transparent 70%);
   border-radius:2px;width:0%;
-  transition:width 1.2s cubic-bezier(0.22,1,0.36,1);
+  transition:width 1.2s cubic-bezier(0.32,0.72,0,1);
 }
 
-/* ── Buttons ── */
+/* Button-in-Button CTA */
 .btn-ice{
   display:inline-flex;align-items:center;gap:10px;
-  padding:11px 22px;
+  padding:13px 24px;
   background:rgba(125,211,252,0.06);
   border:1px solid rgba(125,211,252,0.12);
   border-radius:999px;
-  color:#7dd3fc;font-size:11px;font-family:'JetBrains Mono',monospace;
+  color:#7dd3fc;font-size:11px;font-family:'JetBrains Mono','SF Mono',monospace;
   text-decoration:none;text-transform:uppercase;letter-spacing:0.08em;
-  transition:all 0.35s cubic-bezier(0.22,1,0.36,1);
+  transition:all 0.4s cubic-bezier(0.32,0.72,0,1);
   cursor:pointer;
 }
 .btn-ice:hover{
@@ -137,104 +179,99 @@ body{
 }
 .btn-ice:active{transform:scale(0.97)}
 .btn-ice .ic-w{
-  width:22px;height:22px;border-radius:50%;
+  width:24px;height:24px;border-radius:50%;
   background:rgba(125,211,252,0.1);
   display:inline-flex;align-items:center;justify-content:center;
-  font-size:10px;flex-shrink:0;transition:transform 0.35s;
+  font-size:10px;flex-shrink:0;
+  transition:transform 0.4s cubic-bezier(0.32,0.72,0,1);
 }
-.btn-ice:hover .ic-w{transform:translateX(3px) translateY(-1px)}
+.btn-ice:hover .ic-w{transform:translateX(3px) translateY(-1px) scale(1.05)}
 
 .btn-ghost{
   display:inline-flex;align-items:center;
-  padding:11px 22px;
-  border:1px solid rgba(255,255,255,0.05);
-  border-radius:999px;
-  color:#787878;font-size:11px;font-family:'JetBrains Mono',monospace;
-  text-decoration:none;text-transform:uppercase;letter-spacing:0.08em;
-  transition:all 0.35s cubic-bezier(0.22,1,0.36,1);
+  padding:13px 24px;
+  border:1px solid rgba(255,255,255,0.04);
+  border-radius:999px;font-family:'JetBrains Mono','SF Mono',monospace;
+  color:#787878;font-size:11px;text-decoration:none;
+  text-transform:uppercase;letter-spacing:0.08em;
+  transition:all 0.4s cubic-bezier(0.32,0.72,0,1);
   cursor:pointer;
 }
-.btn-ghost:hover{border-color:rgba(125,211,252,0.15);color:#7dd3fc}
+.btn-ghost:hover{border-color:rgba(125,211,252,0.12);color:#7dd3fc;transform:translateY(-1px)}
 
-/* ── Nav Island ── */
-.nav-island{
-  position:fixed;top:12px;left:50%;transform:translateX(-50%);
-  z-index:100;
-  background:rgba(5,5,5,0.6);
-  backdrop-filter:blur(24px);
-  -webkit-backdrop-filter:blur(24px);
-  border:1px solid rgba(255,255,255,0.04);
-  border-radius:999px;
-  padding:4px;
-}
-.nav-link{
-  padding:6px 14px;font-size:10px;letter-spacing:0.06em;
-  color:#787878;text-decoration:none;border-radius:999px;
-  transition:all 0.25s cubic-bezier(0.22,1,0.36,1);
-  white-space:nowrap;
-}
-.nav-link:hover{color:#7dd3fc;background:rgba(125,211,252,0.05)}
-
-/* ── Project Card ── */
+/* Project Card */
 .pro-card{
   position:relative;overflow:hidden;
-  border-radius:0.75rem;
+  border-radius:1rem;
   border:1px solid rgba(255,255,255,0.04);
-  background:rgba(10,10,10,0.45);
-  transition:all 0.45s cubic-bezier(0.22,1,0.36,1);
+  background:rgba(10,10,10,0.4);
+  transition:all 0.5s cubic-bezier(0.32,0.72,0,1);
 }
-.pro-card:hover{border-color:rgba(125,211,252,0.08);background:rgba(12,12,12,0.55)}
+.pro-card:hover{
+  border-color:rgba(125,211,252,0.08);
+  background:rgba(13,13,13,0.5);
+}
 .pro-card-img{
-  height:180px;background-size:cover;background-position:center;
-  background-color:rgba(125,211,252,0.02);
-  transition:transform 0.6s;
+  height:160px;background-size:cover;background-position:center;
+  background-color:rgba(125,211,252,0.015);
+  transition:transform 0.7s cubic-bezier(0.32,0.72,0,1);
 }
-.pro-card:hover .pro-card-img{transform:scale(1.02)}
+.pro-card:hover .pro-card-img{transform:scale(1.03)}
 
-/* ── Stat Number ── */
+/* Stat Number */
 .stat-n{
-  font-size:clamp(1.4rem,3.5vw,2.2rem);
+  font-size:clamp(1.5rem,3.5vw,2.4rem);
   font-weight:700;color:#7dd3fc;line-height:1;
+  font-family:'JetBrains Mono','SF Mono',monospace;
   font-variant-numeric:tabular-nums;
 }
 
-/* ── Timeline ── */
+/* Timeline */
 .t-dot{
   width:5px;height:5px;border-radius:50%;
-  background:rgba(125,211,252,0.08);
-  border:1px solid rgba(125,211,252,0.25);
+  background:rgba(125,211,252,0.06);
+  border:1.5px solid rgba(125,211,252,0.2);
   flex-shrink:0;position:relative;z-index:2;
 }
 .t-line{
   width:1px;flex:1;
-  background:linear-gradient(to bottom,rgba(125,211,252,0.06),transparent);
+  background:linear-gradient(to bottom,rgba(125,211,252,0.04),transparent);
   margin-left:2px;
 }
 
-/* ── Scrub text base ── */
-.scrub-target{display:inline}
-.scrub-target .sw{display:inline-block;margin-right:0.4em;opacity:0.08}
+/* Scrub text */
+.scrub-w{display:inline-block;margin-right:0.35em;opacity:0.06;}
 
-/* ── Screenshot card ── */
+/* Screenshot grid tile */
 .sshot{
   border-radius:0.75rem;overflow:hidden;
   border:1px solid rgba(255,255,255,0.04);
   background-size:cover;background-position:center;
-  aspect-ratio:16/10;
-  transition:all 0.45s cubic-bezier(0.22,1,0.36,1);
+  aspect-ratio:16/11;
+  transition:all 0.5s cubic-bezier(0.32,0.72,0,1);
 }
-.sshot:hover{border-color:rgba(125,211,252,0.1);transform:scale(1.01)}
+.sshot:hover{border-color:rgba(125,211,252,0.08);transform:scale(1.012)}
 
-/* ── Footer divider ── */
-.f-div{border:none;height:1px;background:linear-gradient(90deg,transparent,rgba(125,211,252,0.03),transparent)}
+/* Marquee */
+.m-track{display:flex;overflow:hidden;white-space:nowrap}
+.m-inner{display:flex;gap:56px;padding:0 28px;animation:marquee 40s linear infinite}
 
-/* ── Responsive ── */
+/* Horizontal scroll gallery */
+.h-scroll{
+  display:flex;overflow-x:auto;gap:12px;
+  scroll-snap-type:x mandatory;
+  -webkit-overflow-scrolling:touch;
+  scrollbar-width:none;
+}
+.h-scroll::-webkit-scrollbar{display:none}
+.h-scroll>*{scroll-snap-align:start;flex:0 0 300px}
+
+/* Responsive */
 @media(max-width:640px){
-  .nav-island{top:8px;padding:2px}
-  .nav-link{padding:4px 8px;font-size:8px}
-  .btn-ice,.btn-ghost{padding:9px 16px;font-size:10px}
+  .nav-island{top:10px;padding:3px}
+  .nav-link{padding:5px 10px;font-size:8px}
+  .btn-ice,.btn-ghost{padding:11px 18px;font-size:10px}
 }
-
 @media (prefers-reduced-motion:reduce){
   *,*::before,*::after{
     animation-duration:0.01ms!important;
@@ -242,25 +279,24 @@ body{
     transition-duration:0.01ms!important;
   }
   html{scroll-behavior:auto}
-  .scrub-target .sw{opacity:1!important}
+  .scrub-w{opacity:1!important}
 }
 </style>
 </head>
 <body>
 
-<!-- Atmosphere -->
 <div class="grid-bg" aria-hidden="true"></div>
 <div class="orb-1" aria-hidden="true"></div>
+<div class="orb-2" aria-hidden="true"></div>
 
-<!-- Skip -->
-<a href="#main" class="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-[200] focus:px-4 focus:py-2 focus:bg-ice focus:text-black focus:text-xs focus:rounded">Skip to main</a>
+<a href="#main" class="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-[200] focus:px-4 focus:py-2 focus:bg-ice focus:text-dark-950 focus:text-xs focus:rounded">Skip to main</a>
 
-<!-- ═══ NAV ═══ -->
+<!-- ═══ NAV — Fluid Island ═══ -->
 <nav class="nav-island" role="navigation" aria-label="Primary">
-  <div class="flex items-center gap-0.5">
-    <span class="text-[9px] text-ice/40 tracking-[0.15em] px-2 hidden sm:block">JT</span>
-    <a href="#work" class="nav-link" data-s="work">Work</a>
-    <a href="#projects" class="nav-link" data-s="projects">Projects</a>
+  <div class="flex items-center gap-1">
+    <span class="text-[9px] text-ice/30 tracking-[0.15em] px-2 hidden sm:block" style="font-family:'JetBrains Mono',monospace">JT</span>
+    <a href="#work" class="nav-link" data-s="work">About</a>
+    <a href="#projects" class="nav-link" data-s="projects">Work</a>
     <a href="#stack" class="nav-link" data-s="stack">Stack</a>
     <a href="#contact" class="nav-link" data-s="contact">Contact</a>
   </div>
@@ -268,132 +304,208 @@ body{
 
 <main id="main" class="relative z-10">
 
-<!-- ═══ HERO ═══ -->
-<section class="min-h-[85dvh] flex items-center px-4" aria-label="Introduction">
-  <div class="max-w-4xl mx-auto w-full">
+<!-- ═══ HERO — Asymmetric (Variance 8) ═══ -->
+<section class="min-h-[100dvh] flex items-center px-4 relative overflow-hidden" aria-label="Introduction">
+  <div class="w-full max-w-6xl mx-auto grid md:grid-cols-5 gap-8 items-center">
+    
+    <!-- Left: Content -->
+    <div class="md:col-span-3 pt-16 md:pt-0">
+      <div class="flex items-center gap-2 text-[10px] text-dark-400/60 tracking-[0.12em] mb-5 rs" style="font-family:'JetBrains Mono',monospace">
+        <span class="w-6 h-px bg-ice/20"></span>
+        <span>Legazpi City, PH &middot; UTC+8</span>
+      </div>
 
-    <div class="flex items-center gap-2 text-[10px] text-dark-400/70 tracking-[0.12em] mb-5 rs">
-      <span class="w-6 h-px bg-ice/20"></span>
-      <span>Legazpi City, PH · UTC+8</span>
-      <span class="text-ice/40 ml-1">$ whoami</span>
+      <h1 class="text-[clamp(2.8rem,6.5vw,5.5rem)] font-bold leading-[0.98] tracking-tight text-white mb-3 font-display">
+        <span class="rs block">Joseph</span>
+        <span class="rs block mt-[-0.03em]">
+          <span class="text-ice">Trilles</span>
+        </span>
+      </h1>
+
+      <div class="rs flex items-center gap-2 flex-wrap text-[clamp(1.1rem,2vw,1.5rem)] font-display font-medium text-dark-300 mb-4">
+        <span class="inline-flex items-center gap-1.5">
+          Gov ops
+          <span class="inline-block w-7 h-7 rounded-full bg-ice/10 border border-ice/10 bg-cover bg-center" style="background-image:url('img/terminal.jpg')"></span>
+        </span>
+        <span class="text-dark-500">&times;</span>
+        <span>AI engineer</span>
+      </div>
+
+      <p class="rs text-sm text-dark-300 max-w-xl leading-relaxed mb-1">
+        <span class="text-ice/40" style="font-family:'JetBrains Mono',monospace">$&nbsp;</span>
+        Computer engineer with a decade in government ICT, now building autonomous agent systems<span class="text-white/60"> that run 24/7</span>.
+      </p>
+      <p class="rs text-xs text-dark-400 max-w-lg mb-6" style="font-family:'JetBrains Mono',monospace">
+        Hermes operator &middot; DeepSeek / Gemini / Claude / Codex &middot; LOKI ecosystem
+        <span class="text-ice/50"> &middot; Remote AI engineering</span>
+      </p>
+
+      <div class="rs flex flex-wrap gap-2 mb-6">
+        <span class="tag">AI automation</span>
+        <span class="tag">LLM orchestration</span>
+        <span class="tag">Gov ICT</span>
+        <span class="tag">Bicol, PH</span>
+      </div>
+
+      <div class="rs flex flex-wrap gap-3">
+        <a href="#projects" class="btn-ice">
+          <span>View work</span>
+          <span class="ic-w" aria-hidden="true">→</span>
+        </a>
+        <a href="#contact" class="btn-ghost">Reach out</a>
+      </div>
     </div>
 
-    <h1 class="text-[clamp(2.6rem,7vw,5.5rem)] font-extrabold leading-[0.98] tracking-tight text-white mb-1">
-      <span class="rs block">Joseph</span>
-      <span class="rs block mt-[-0.02em]">
-        <span class="text-ice">Trilles</span>
-      </span>
-    </h1>
-
-    <p class="rs text-xs sm:text-sm text-dark-300 max-w-2xl leading-relaxed mt-4 mb-1">
-      <span class="text-ice/50">$&nbsp;</span>
-      Computer engineer at the intersection of government operations and AI —
-      building autonomous agent systems<span class="text-white/70"> that run 24/7</span>.
-    </p>
-    <p class="rs text-[11px] text-dark-400 max-w-xl leading-relaxed mb-5">
-      Hermes operator · DeepSeek / Gemini / Codex · 10yr gov ICT lead
-      <span class="text-ice/50"> · Remote AI engineering →</span>
-    </p>
-
-    <div class="rs flex flex-wrap gap-1.5 mb-6">
-      <span class="tag">AI Automation · Hermes OS</span>
-      <span class="tag">LLM Orchestration</span>
-      <span class="tag">Gov Ops · ICT</span>
-      <span class="tag">Bicol, PH</span>
+    <!-- Right: Abstract terminal visual -->
+    <div class="md:col-span-2 hidden md:flex items-center justify-center rs">
+      <div class="bezel-outer w-full max-w-sm">
+        <div class="bezel-inner p-4">
+          <div class="space-y-2 text-[9px]" style="font-family:'JetBrains Mono',monospace">
+            <div class="flex items-center gap-2 text-dark-500">
+              <span class="w-2 h-2 rounded-full bg-ice/40"></span>
+              <span class="w-2 h-2 rounded-full bg-dark-600"></span>
+              <span class="w-2 h-2 rounded-full bg-dark-600"></span>
+              <span class="ml-auto text-dark-500">loki@hermes:~$</span>
+            </div>
+            <div class="text-dark-300"><span class="text-ice/60">$</span> whoami</div>
+            <div class="text-dark-200">Joseph Trilles &mdash; AI Engineer</div>
+            <div class="text-dark-300 mt-1"><span class="text-ice/60">$</span> uptime</div>
+            <div class="text-dark-200">10 years gov ICT &middot; 7 agents active</div>
+            <div class="text-dark-300 mt-1"><span class="text-ice/60">$</span> systemctl status loki</div>
+            <div class="text-ice/80">● loki.service — LOKI AI Operating System</div>
+            <div class="text-dark-400 pl-4">Active: running since 2024-12</div>
+            <div class="text-dark-400 pl-4">Agents: 7 &middot; Workflows: 24</div>
+            <div class="flex items-center gap-1.5 mt-2 pt-2 border-t border-dark-700">
+              <span class="w-1.5 h-1.5 rounded-full bg-ice animate-pulse-soft"></span>
+              <span class="text-ice/40">Status:&nbsp;operational</span>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
+  </div>
+</section>
 
-    <div class="rs flex flex-wrap gap-3">
-      <a href="#projects" class="btn-ice">
-        <span>View Work</span>
-        <span class="ic-w" aria-hidden="true">→</span>
-      </a>
-      <a href="#contact" class="btn-ghost">Reach Out</a>
+<!-- ═══ MARQUEE — Tech Band ═══ -->
+<section class="py-6 border-y border-dark-700 overflow-hidden" aria-label="Technologies">
+  <div class="m-track">
+    <div class="m-inner text-[11px] text-dark-500 tracking-[0.15em] uppercase" style="font-family:'JetBrains Mono',monospace">
+      <span>Hermes Agent</span><span class="text-ice/15">✦</span>
+      <span>DeepSeek</span><span class="text-ice/15">✦</span>
+      <span>Gemini</span><span class="text-ice/15">✦</span>
+      <span>Claude</span><span class="text-ice/15">✦</span>
+      <span>Codex CLI</span><span class="text-ice/15">✦</span>
+      <span>n8n</span><span class="text-ice/15">✦</span>
+      <span>Python</span><span class="text-ice/15">✦</span>
+      <span>React</span><span class="text-ice/15">✦</span>
+      <span>Tailwind</span><span class="text-ice/15">✦</span>
+      <span>Obsidian</span><span class="text-ice/15">✦</span>
+      <span>GSAP</span><span class="text-ice/15">✦</span>
+      <span>SQL</span><span class="text-ice/15">✦</span>
+      <span>Qwen</span><span class="text-ice/15">✦</span>
+      <span>DSPy</span>
+    </div>
+    <div class="m-inner text-[11px] text-dark-500 tracking-[0.15em] uppercase" style="font-family:'JetBrains Mono',monospace" aria-hidden="true">
+      <span>Hermes Agent</span><span class="text-ice/15">✦</span>
+      <span>DeepSeek</span><span class="text-ice/15">✦</span>
+      <span>Gemini</span><span class="text-ice/15">✦</span>
+      <span>Claude</span><span class="text-ice/15">✦</span>
+      <span>Codex CLI</span><span class="text-ice/15">✦</span>
+      <span>n8n</span><span class="text-ice/15">✦</span>
+      <span>Python</span><span class="text-ice/15">✦</span>
+      <span>React</span><span class="text-ice/15">✦</span>
+      <span>Tailwind</span><span class="text-ice/15">✦</span>
+      <span>Obsidian</span><span class="text-ice/15">✦</span>
+      <span>GSAP</span><span class="text-ice/15">✦</span>
+      <span>SQL</span><span class="text-ice/15">✦</span>
+      <span>Qwen</span><span class="text-ice/15">✦</span>
+      <span>DSPy</span>
     </div>
   </div>
 </section>
 
 <!-- ═══ STATS ═══ -->
-<section class="border-y border-[#151515]" aria-label="Key metrics">
+<section class="border-y border-dark-700" aria-label="Metrics">
   <div class="max-w-4xl mx-auto px-4">
-    <div class="grid grid-cols-2 sm:grid-cols-4 divide-x divide-[#151515]">
-      <div class="py-5 px-4 text-center sc">
+    <div class="grid grid-cols-2 sm:grid-cols-4 divide-x divide-dark-700">
+      <div class="py-6 px-4 text-center sc">
         <div class="stat-n" data-t="10">0</div>
-        <p class="text-[10px] text-dark-500 leading-tight mt-1">Years gov ops / ICT</p>
+        <p class="text-[10px] text-dark-500 leading-tight mt-1" style="font-family:'JetBrains Mono',monospace">Years gov ICT</p>
       </div>
-      <div class="py-5 px-4 text-center sc">
+      <div class="py-6 px-4 text-center sc">
         <div class="stat-n" data-t="24">0</div>
-        <p class="text-[10px] text-dark-500 leading-tight mt-1">Active AI workflows</p>
+        <p class="text-[10px] text-dark-500 leading-tight mt-1" style="font-family:'JetBrains Mono',monospace">Active AI workflows</p>
       </div>
-      <div class="py-5 px-4 text-center sc">
+      <div class="py-6 px-4 text-center sc">
         <div class="stat-n" data-t="7">0</div>
-        <p class="text-[10px] text-dark-500 leading-tight mt-1">AI agents running</p>
+        <p class="text-[10px] text-dark-500 leading-tight mt-1" style="font-family:'JetBrains Mono',monospace">AI agents running</p>
       </div>
-      <div class="py-5 px-4 text-center sc">
+      <div class="py-6 px-4 text-center sc">
         <div class="stat-n" data-t="3">0</div>
-        <p class="text-[10px] text-dark-500 leading-tight mt-1">Gov systems built</p>
+        <p class="text-[10px] text-dark-500 leading-tight mt-1" style="font-family:'JetBrains Mono',monospace">Gov systems built</p>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ═══ ABOUT ═══ -->
-<section id="work" class="py-20 px-4" aria-label="About">
-  <div class="max-w-4xl mx-auto">
-    <span class="sec-num mb-5 block"><span class="text-dark-400">#01</span> About</span>
+<!-- ═══ ABOUT — Double-Bezel Split ═══ -->
+<section id="work" class="py-32 px-4" aria-label="About">
+  <div class="max-w-5xl mx-auto">
+    <span class="sec-eyebrow mb-6">About</span>
 
-    <div class="grid md:grid-cols-5 gap-6">
-      <div class="md:col-span-2">
-        <h2 class="text-lg font-bold text-white leading-snug mb-4">
+    <div class="grid md:grid-cols-5 gap-8 mt-2">
+      <div class="md:col-span-2 reveal-up">
+        <h2 class="text-2xl md:text-3xl font-bold text-white leading-[1.1] tracking-tight font-display mb-5">
           Gov ops <span class="text-ice/50">&times;</span> AI<br />
           <span class="text-ice">one person ecosystem</span>
         </h2>
-        <div class="space-y-3 text-xs text-dark-300 leading-relaxed">
+        <div class="space-y-3 text-sm text-dark-300 leading-relaxed">
           <p>
             Computer Engineer and Senior Tourism Operations Officer with a decade at the
             Department of Tourism Region V. Lead ICT architecture, built the award-winning
-            Exciting Bicol brand, and operate LOKI — an autonomous AI agent ecosystem
-            across Hermes, Codex, Gemini, DeepSeek, and local models.
+            Exciting Bicol brand, and operate LOKI &mdash; an autonomous AI agent ecosystem
+            running across Hermes, Codex, Gemini, DeepSeek, and local models.
           </p>
-          <p class="text-dark-400">
+          <p class="text-dark-400 text-xs">
             Transitioning to full-time remote AI engineering.
-            <span class="text-ice/60">Target: $4k–$8k/mo.</span>
+            <span class="text-ice/60">Target: $4k&ndash;$8k/mo.</span>
           </p>
-          <div class="flex flex-wrap gap-1.5 pt-1">
+          <div class="flex flex-wrap gap-1.5 pt-2">
             <span class="tag">DOT Region V</span>
             <span class="tag">ICT Focal</span>
             <span class="tag">DPO</span>
-            <span class="tag">Hermes Operator</span>
+            <span class="tag">Hermes operator</span>
           </div>
         </div>
       </div>
 
-      <div class="md:col-span-3 grid grid-cols-2 gap-2.5">
-        <div class="bezel p-4">
-          <span class="text-[10px] font-semibold text-ice tracking-wide">AI / LLM</span>
-          <p class="text-[9px] text-dark-400 mt-2">DeepSeek, Gemini, Claude, Hermes Agent, Ollama, Qwen, DSPy, Groq</p>
-        </div>
-        <div class="bezel p-4">
-          <span class="text-[10px] font-semibold text-ice tracking-wide">Automation</span>
-          <p class="text-[9px] text-dark-400 mt-2">n8n, cron, Composio, webhooks, GWS API, sub-agents, Discord bots</p>
-        </div>
-        <div class="bezel p-4">
-          <span class="text-[10px] font-semibold text-ice tracking-wide">Web / Design</span>
-          <p class="text-[9px] text-dark-400 mt-2">React, Tailwind, GSAP, Framer, SEO, Figma, brand design, Premiere</p>
-        </div>
-        <div class="bezel p-4">
-          <span class="text-[10px] font-semibold text-ice tracking-wide">Systems</span>
-          <p class="text-[9px] text-dark-400 mt-2">Python, SQL, Docker, Linux, macOS, Google Cloud, Git workflows</p>
-        </div>
+      <div class="md:col-span-3 grid grid-cols-2 gap-3 reveal-up">
+        <div class="bezel-outer"><div class="bezel-inner">
+          <span class="text-[10px] font-semibold text-ice tracking-wide" style="font-family:'JetBrains Mono',monospace">AI / LLM</span>
+          <p class="text-[9px] text-dark-400 mt-2 leading-relaxed">DeepSeek, Gemini, Claude, Hermes Agent, Ollama, Qwen, DSPy, Groq</p>
+        </div></div>
+        <div class="bezel-outer"><div class="bezel-inner">
+          <span class="text-[10px] font-semibold text-ice tracking-wide" style="font-family:'JetBrains Mono',monospace">Automation</span>
+          <p class="text-[9px] text-dark-400 mt-2 leading-relaxed">n8n, cron, Composio, webhooks, GWS API, sub-agents, Discord bots</p>
+        </div></div>
+        <div class="bezel-outer"><div class="bezel-inner">
+          <span class="text-[10px] font-semibold text-ice tracking-wide" style="font-family:'JetBrains Mono',monospace">Web / Design</span>
+          <p class="text-[9px] text-dark-400 mt-2 leading-relaxed">React, Tailwind, GSAP, Framer, SEO, Figma, brand design, Premiere</p>
+        </div></div>
+        <div class="bezel-outer"><div class="bezel-inner">
+          <span class="text-[10px] font-semibold text-ice tracking-wide" style="font-family:'JetBrains Mono',monospace">Systems</span>
+          <p class="text-[9px] text-dark-400 mt-2 leading-relaxed">Python, SQL, Docker, Linux, macOS, Google Cloud, Git workflows</p>
+        </div></div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ═══ SCRUBBING TEXT ═══ -->
-<section class="py-24 px-4" aria-label="Philosophy">
-  <div class="max-w-4xl mx-auto">
-    <span class="sec-num mb-5 block"><span class="text-dark-400">#02</span> Philosophy</span>
-    <h2 class="text-[clamp(1.6rem,3.5vw,3rem)] font-bold text-white leading-[1.15] tracking-tight scrub-target">
+<!-- ═══ SCRUB TEXT — Philosophy ═══ -->
+<section class="py-36 px-4" aria-label="Philosophy">
+  <div class="max-w-5xl mx-auto">
+    <span class="sec-eyebrow mb-6">Philosophy</span>
+    <h2 class="text-[clamp(1.8rem,3.8vw,3.2rem)] font-bold text-white leading-[1.12] tracking-tight font-display scrub-target">
       I don't write code that sits idle.
       <span class="text-ice/60">Every pipeline runs autonomously.</span>
       Every agent has a job.
@@ -402,93 +514,93 @@ body{
   </div>
 </section>
 
-<!-- ═══ PROJECTS ═══ -->
-<section id="projects" class="py-20 px-4" aria-label="Projects">
-  <div class="max-w-4xl mx-auto">
-    <span class="sec-num mb-5 block"><span class="text-dark-400">#03</span> Projects</span>
+<!-- ═══ PROJECTS — Gapless Bento Grid ═══ -->
+<section id="projects" class="py-32 px-4" aria-label="Projects">
+  <div class="max-w-5xl mx-auto">
+    <span class="sec-eyebrow mb-6">Projects</span>
 
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-2.5 auto-rows-[180px]">
-      <!-- LOKI OS — hero -->
-      <div class="pro-card md:col-span-2 md:row-span-2 group p-5 flex flex-col justify-between" data-proj>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-2.5 auto-rows-[200px] grid-flow-dense mt-2">
+      <!-- LOKI OS — Hero, spans 2 cols, 2 rows -->
+      <div class="pro-card md:col-span-2 md:row-span-2 group p-6 flex flex-col justify-between reveal-up">
         <div>
           <div class="flex items-center justify-between">
-            <span class="text-[8px] text-ice/40 tracking-[0.2em] uppercase">Flagship · 2025</span>
-            <span class="text-xs text-dark-500 group-hover:text-ice/40 transition-colors">↗</span>
+            <span class="text-[8px] text-ice/40 tracking-[0.2em] uppercase" style="font-family:'JetBrains Mono',monospace">Flagship &middot; 2025</span>
+            <span class="text-xs text-dark-500 group-hover:text-ice/40 transition-colors duration-500">↗</span>
           </div>
-          <h3 class="text-sm sm:text-base font-bold text-white mt-2 mb-1.5">LOKI — AI Operating System</h3>
+          <h3 class="text-sm sm:text-base font-bold text-white mt-2 mb-1.5 font-display">LOKI &mdash; AI Operating System</h3>
           <p class="text-[11px] text-dark-400 leading-relaxed max-w-prose">
             Daily AI operator: scheduled briefs, career scouting, health logging,
-            staff monitoring, vault management, workflow execution.
-            7 agents with multi-LLM routing across Hermes, Codex, Gemini, DeepSeek.
+            staff monitoring, vault management, workflow execution across 7 agents
+            with multi-LLM routing.
           </p>
         </div>
         <div class="flex flex-wrap gap-1 mt-2">
           <span class="tag">Hermes Agent</span>
           <span class="tag">DeepSeek</span>
-          <span class="tag">Cron · 24/7</span>
+          <span class="tag">Cron / 24/7</span>
           <span class="tag">Obsidian</span>
         </div>
       </div>
 
-      <!-- KFX Dispatch -->
-      <div class="pro-card group flex flex-col" data-proj>
+      <!-- KFX Dispatch — image card -->
+      <div class="pro-card group flex flex-col reveal-up">
         <div class="pro-card-img" style="background-image:url('img/dispatch.jpg')"></div>
         <div class="p-4 flex flex-col justify-between flex-1">
           <div>
             <div class="flex items-center justify-between">
-              <span class="text-[8px] text-ice/30 tracking-[0.2em] uppercase">Tool · 2025</span>
-              <span class="text-xs text-dark-500 group-hover:text-ice/40 transition-colors">↗</span>
+              <span class="text-[8px] text-ice/30 tracking-[0.2em] uppercase" style="font-family:'JetBrains Mono',monospace">Tool &middot; 2025</span>
+              <span class="text-xs text-dark-500 group-hover:text-ice/40 transition-colors duration-500">↗</span>
             </div>
-            <h3 class="text-xs font-bold text-white mt-1 mb-0.5">KFX Dispatch</h3>
-            <p class="text-[10px] text-dark-400 leading-relaxed">Gmail, Calendar, Sheets → AI summary → Discord + archive</p>
+            <h3 class="text-xs font-bold text-white mt-1 mb-0.5 font-display">KFX Dispatch</h3>
+            <p class="text-[10px] text-dark-400 leading-relaxed">Gmail, Calendar, Sheets &rarr; AI summary &rarr; Discord + archive</p>
           </div>
           <div class="flex flex-wrap gap-1 mt-2"><span class="tag">GWS</span><span class="tag">n8n</span><span class="tag">Discord</span></div>
         </div>
       </div>
 
-      <!-- Career GODMODE -->
-      <div class="pro-card group flex flex-col" data-proj>
+      <!-- Career GODMODE — image card -->
+      <div class="pro-card group flex flex-col reveal-up">
         <div class="pro-card-img" style="background-image:url('img/career.jpg')"></div>
         <div class="p-4 flex flex-col justify-between flex-1">
           <div>
             <div class="flex items-center justify-between">
-              <span class="text-[8px] text-ice/30 tracking-[0.2em] uppercase">Automation · 2025</span>
-              <span class="text-xs text-dark-500 group-hover:text-ice/40 transition-colors">↗</span>
+              <span class="text-[8px] text-ice/30 tracking-[0.2em] uppercase" style="font-family:'JetBrains Mono',monospace">Automation &middot; 2025</span>
+              <span class="text-xs text-dark-500 group-hover:text-ice/40 transition-colors duration-500">↗</span>
             </div>
-            <h3 class="text-xs font-bold text-white mt-1 mb-0.5">Career GODMODE</h3>
-            <p class="text-[10px] text-dark-400 leading-relaxed">Scout, score, package, draft, track — full job-search pipeline</p>
+            <h3 class="text-xs font-bold text-white mt-1 mb-0.5 font-display">Career GODMODE</h3>
+            <p class="text-[10px] text-dark-400 leading-relaxed">Scout, score, package, draft, track &mdash; full job-search pipeline</p>
           </div>
           <div class="flex flex-wrap gap-1 mt-2"><span class="tag">AI Scout</span><span class="tag">PDF Gen</span><span class="tag">Cron</span></div>
         </div>
       </div>
 
-      <!-- Exciting Bicol -->
-      <div class="pro-card group flex flex-col" data-proj>
+      <!-- Exciting Bicol — image card -->
+      <div class="pro-card group flex flex-col reveal-up">
         <div class="pro-card-img" style="background-image:url('img/bicol.jpg')"></div>
         <div class="p-4 flex flex-col justify-between flex-1">
           <div>
             <div class="flex items-center justify-between">
-              <span class="text-[8px] text-ice/30 tracking-[0.2em] uppercase">Award · 2024</span>
-              <span class="text-xs text-dark-500 group-hover:text-ice/40 transition-colors">↗</span>
+              <span class="text-[8px] text-ice/30 tracking-[0.2em] uppercase" style="font-family:'JetBrains Mono',monospace">Award &middot; 2024</span>
+              <span class="text-xs text-dark-500 group-hover:text-ice/40 transition-colors duration-500">↗</span>
             </div>
-            <h3 class="text-xs font-bold text-white mt-1 mb-0.5">Exciting Bicol</h3>
+            <h3 class="text-xs font-bold text-white mt-1 mb-0.5 font-display">Exciting Bicol</h3>
             <p class="text-[10px] text-dark-400 leading-relaxed">TPB Best Regional Tourism Brand. Full visual identity + campaign</p>
           </div>
           <div class="flex flex-wrap gap-1 mt-2"><span class="tag">Identity</span><span class="tag">Award</span></div>
         </div>
       </div>
 
-      <!-- DOT V Database -->
-      <div class="pro-card group flex flex-col" data-proj>
+      <!-- DOT V Database — image card -->
+      <div class="pro-card group flex flex-col reveal-up">
         <div class="pro-card-img" style="background-image:url('img/dotdb.jpg')"></div>
         <div class="p-4 flex flex-col justify-between flex-1">
           <div>
             <div class="flex items-center justify-between">
-              <span class="text-[8px] text-ice/30 tracking-[0.2em] uppercase">Enterprise · Live</span>
-              <span class="text-xs text-dark-500 group-hover:text-ice/40 transition-colors">↗</span>
+              <span class="text-[8px] text-ice/30 tracking-[0.2em] uppercase" style="font-family:'JetBrains Mono',monospace">Enterprise &middot; Live</span>
+              <span class="text-xs text-dark-500 group-hover:text-ice/40 transition-colors duration-500">↗</span>
             </div>
-            <h3 class="text-xs font-bold text-white mt-1 mb-0.5">DOT V Database</h3>
-            <p class="text-[10px] text-dark-400 leading-relaxed">Accreditation, stats, training, finance — Phase III live</p>
+            <h3 class="text-xs font-bold text-white mt-1 mb-0.5 font-display">DOT V Database</h3>
+            <p class="text-[10px] text-dark-400 leading-relaxed">Accreditation, stats, training, finance &mdash; Phase III live</p>
           </div>
           <div class="flex flex-wrap gap-1 mt-2"><span class="tag">Database</span><span class="tag">Gov</span><span class="tag">Full-stack</span></div>
         </div>
@@ -497,127 +609,145 @@ body{
   </div>
 </section>
 
-<!-- ═══ SCREENSHOT SHOWCASE ═══ -->
-<section class="py-20 px-4" aria-label="Screenshots">
-  <div class="max-w-4xl mx-auto">
-    <span class="sec-num mb-5 block"><span class="text-dark-400">#04</span> In action</span>
-    <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
-      <div class="sshot" style="background-image:url('img/terminal.jpg');background-size:cover" title="Hermes TUI - LOKI running"></div>
-      <div class="sshot" style="background-image:url('img/discord.jpg');background-size:cover" title="Discord gateway connected"></div>
-      <div class="sshot" style="background-image:url('img/obsidian.jpg');background-size:cover" title="Obsidian vault"></div>
-      <div class="sshot" style="background-image:url('img/n8n.jpg');background-size:cover" title="n8n workflow"></div>
-    </div>
-    <p class="text-[10px] text-dark-500 text-center mt-3">Live screenshots from the LOKI operating environment</p>
+<!-- ═══ HORIZONTAL SCROLL — Live Screenshots ═══ -->
+<section class="py-32 px-4 overflow-hidden" aria-label="Live environment">
+  <div class="max-w-5xl mx-auto mb-6">
+    <span class="sec-eyebrow">In action</span>
   </div>
+
+  <div class="h-scroll pl-[max(1rem,calc((100%-64rem)/2))] pb-2">
+    <div class="bezel-outer min-w-[260px]"><div class="bezel-inner p-4">
+      <div class="sshot mb-3" style="background-image:url('img/terminal.jpg')"></div>
+      <span class="text-[9px] text-ice/40 tracking-[0.15em] uppercase" style="font-family:'JetBrains Mono',monospace">Terminal &middot; LOKI TUI</span>
+      <p class="text-[10px] text-dark-400 mt-1 leading-relaxed">Hermes agent runtime &mdash; multi-LLM routing, cron, sub-agents</p>
+    </div></div>
+    <div class="bezel-outer min-w-[260px]"><div class="bezel-inner p-4">
+      <div class="sshot mb-3" style="background-image:url('img/discord.jpg')"></div>
+      <span class="text-[9px] text-ice/40 tracking-[0.15em] uppercase" style="font-family:'JetBrains Mono',monospace">Gateway &middot; Discord</span>
+      <p class="text-[10px] text-dark-400 mt-1 leading-relaxed">Gateway PID 20081 &mdash; Jarvis FX#8890 connected</p>
+    </div></div>
+    <div class="bezel-outer min-w-[260px]"><div class="bezel-inner p-4">
+      <div class="sshot mb-3" style="background-image:url('img/obsidian.jpg')"></div>
+      <span class="text-[9px] text-ice/40 tracking-[0.15em] uppercase" style="font-family:'JetBrains Mono',monospace">Vault &middot; Obsidian</span>
+      <p class="text-[10px] text-dark-400 mt-1 leading-relaxed">2,400+ notes across 7 chambers &mdash; JosephOS-LLMWiki</p>
+    </div></div>
+    <div class="bezel-outer min-w-[260px]"><div class="bezel-inner p-4">
+      <div class="sshot mb-3" style="background-image:url('img/dispatch.jpg')"></div>
+      <span class="text-[9px] text-ice/40 tracking-[0.15em] uppercase" style="font-family:'JetBrains Mono',monospace">Dispatch &middot; KFX</span>
+      <p class="text-[10px] text-dark-400 mt-1 leading-relaxed">Automated staff ops &mdash; Gmail, Sheets, Calendar &rarr; Discord</p>
+    </div></div>
+  </div>
+
+  <p class="text-[10px] text-dark-500 text-center mt-6" style="font-family:'JetBrains Mono',monospace">Live environment &mdash; captured from running session</p>
 </section>
 
 <!-- ═══ STACK + TIMELINE ═══ -->
-<section id="stack" class="py-20 px-4" aria-label="Stack & experience">
-  <div class="max-w-4xl mx-auto">
-    <span class="sec-num mb-5 block"><span class="text-dark-400">#05</span> Stack</span>
+<section id="stack" class="py-32 px-4" aria-label="Stack and experience">
+  <div class="max-w-5xl mx-auto">
+    <span class="sec-eyebrow mb-6">Stack</span>
 
-    <div class="grid md:grid-cols-2 gap-10">
+    <div class="grid md:grid-cols-2 gap-12 mt-2">
       <!-- Skills -->
-      <div>
-        <h3 class="text-xs font-semibold text-white mb-5 tracking-wide">Proficiencies</h3>
+      <div class="reveal-up">
+        <h3 class="text-xs font-semibold text-white mb-6 tracking-wide" style="font-family:'JetBrains Mono',monospace">Proficiencies</h3>
         <div class="space-y-4">
           <div class="sg">
             <div class="flex justify-between text-xs mb-1">
               <span class="text-white/90">AI / LLM Orchestration</span>
-              <span class="text-ice/50 text-[10px]">Advanced</span>
+              <span class="text-ice/50 text-[10px]" style="font-family:'JetBrains Mono',monospace">Advanced</span>
             </div>
             <div class="skill-track"><div class="skill-fill" data-w="95"></div></div>
           </div>
           <div class="sg">
             <div class="flex justify-between text-xs mb-1">
               <span class="text-white/90">Automation &amp; Pipelines</span>
-              <span class="text-ice/50 text-[10px]">Advanced</span>
+              <span class="text-ice/50 text-[10px]" style="font-family:'JetBrains Mono',monospace">Advanced</span>
             </div>
             <div class="skill-track"><div class="skill-fill" data-w="92"></div></div>
           </div>
           <div class="sg">
             <div class="flex justify-between text-xs mb-1">
               <span class="text-white/90">Web Development</span>
-              <span class="text-ice/50 text-[10px]">Advanced</span>
+              <span class="text-ice/50 text-[10px]" style="font-family:'JetBrains Mono',monospace">Advanced</span>
             </div>
             <div class="skill-track"><div class="skill-fill" data-w="85"></div></div>
           </div>
           <div class="sg">
             <div class="flex justify-between text-xs mb-1">
               <span class="text-white/90">Adobe &amp; Creative</span>
-              <span class="text-ice/50 text-[10px]">Advanced</span>
+              <span class="text-ice/50 text-[10px]" style="font-family:'JetBrains Mono',monospace">Advanced</span>
             </div>
             <div class="skill-track"><div class="skill-fill" data-w="88"></div></div>
           </div>
           <div class="sg">
             <div class="flex justify-between text-xs mb-1">
               <span class="text-white/90">Database &amp; SQL</span>
-              <span class="text-ice/50 text-[10px]">Proficient</span>
+              <span class="text-ice/50 text-[10px]" style="font-family:'JetBrains Mono',monospace">Proficient</span>
             </div>
             <div class="skill-track"><div class="skill-fill" data-w="78"></div></div>
           </div>
           <div class="sg">
             <div class="flex justify-between text-xs mb-1">
               <span class="text-white/90">Project Leadership</span>
-              <span class="text-ice/50 text-[10px]">Proficient</span>
+              <span class="text-ice/50 text-[10px]" style="font-family:'JetBrains Mono',monospace">Proficient</span>
             </div>
             <div class="skill-track"><div class="skill-fill" data-w="82"></div></div>
           </div>
         </div>
 
-        <h3 class="text-xs font-semibold text-white mt-8 mb-3 tracking-wide">Technologies</h3>
+        <h3 class="text-xs font-semibold text-white mt-10 mb-4 tracking-wide" style="font-family:'JetBrains Mono',monospace">Technologies</h3>
         <div class="grid grid-cols-3 gap-1.5 tg">
-          <div class="flex items-center gap-2 px-3 py-2 border border-white/5 rounded-lg bg-white/[0.01] text-[10px] text-dark-300 hover:border-ice/10 hover:text-white/80 transition-all"><span class="w-1 h-1 rounded-full bg-ice/40 shrink-0"></span>Hermes</div>
-          <div class="flex items-center gap-2 px-3 py-2 border border-white/5 rounded-lg bg-white/[0.01] text-[10px] text-dark-300 hover:border-ice/10 hover:text-white/80 transition-all"><span class="w-1 h-1 rounded-full bg-ice/40 shrink-0"></span>DeepSeek</div>
-          <div class="flex items-center gap-2 px-3 py-2 border border-white/5 rounded-lg bg-white/[0.01] text-[10px] text-dark-300 hover:border-ice/10 hover:text-white/80 transition-all"><span class="w-1 h-1 rounded-full bg-ice/40 shrink-0"></span>Gemini</div>
-          <div class="flex items-center gap-2 px-3 py-2 border border-white/5 rounded-lg bg-white/[0.01] text-[10px] text-dark-300 hover:border-ice/10 hover:text-white/80 transition-all"><span class="w-1 h-1 rounded-full bg-ice/40 shrink-0"></span>Claude</div>
-          <div class="flex items-center gap-2 px-3 py-2 border border-white/5 rounded-lg bg-white/[0.01] text-[10px] text-dark-300 hover:border-ice/10 hover:text-white/80 transition-all"><span class="w-1 h-1 rounded-full bg-ice/40 shrink-0"></span>Codex CLI</div>
-          <div class="flex items-center gap-2 px-3 py-2 border border-white/5 rounded-lg bg-white/[0.01] text-[10px] text-dark-300 hover:border-ice/10 hover:text-white/80 transition-all"><span class="w-1 h-1 rounded-full bg-ice/40 shrink-0"></span>Obsidian</div>
-          <div class="flex items-center gap-2 px-3 py-2 border border-white/5 rounded-lg bg-white/[0.01] text-[10px] text-dark-300 hover:border-ice/10 hover:text-white/80 transition-all"><span class="w-1 h-1 rounded-full bg-ice/40 shrink-0"></span>n8n</div>
-          <div class="flex items-center gap-2 px-3 py-2 border border-white/5 rounded-lg bg-white/[0.01] text-[10px] text-dark-300 hover:border-ice/10 hover:text-white/80 transition-all"><span class="w-1 h-1 rounded-full bg-ice/40 shrink-0"></span>React</div>
-          <div class="flex items-center gap-2 px-3 py-2 border border-white/5 rounded-lg bg-white/[0.01] text-[10px] text-dark-300 hover:border-ice/10 hover:text-white/80 transition-all"><span class="w-1 h-1 rounded-full bg-ice/40 shrink-0"></span>Tailwind</div>
-          <div class="flex items-center gap-2 px-3 py-2 border border-white/5 rounded-lg bg-white/[0.01] text-[10px] text-dark-300 hover:border-ice/10 hover:text-white/80 transition-all"><span class="w-1 h-1 rounded-full bg-ice/40 shrink-0"></span>Python</div>
-          <div class="flex items-center gap-2 px-3 py-2 border border-white/5 rounded-lg bg-white/[0.01] text-[10px] text-dark-300 hover:border-ice/10 hover:text-white/80 transition-all"><span class="w-1 h-1 rounded-full bg-ice/40 shrink-0"></span>GSAP</div>
-          <div class="flex items-center gap-2 px-3 py-2 border border-white/5 rounded-lg bg-white/[0.01] text-[10px] text-dark-300 hover:border-ice/10 hover:text-white/80 transition-all"><span class="w-1 h-1 rounded-full bg-ice/40 shrink-0"></span>SQL</div>
+          <div class="flex items-center gap-2 px-3 py-2 border border-white/5 rounded-lg bg-white/[0.01] text-[10px] text-dark-300 hover:border-ice/10 hover:text-white/80 transition-all duration-400" style="font-family:'JetBrains Mono',monospace"><span class="w-1 h-1 rounded-full bg-ice/40 shrink-0"></span>Hermes</div>
+          <div class="flex items-center gap-2 px-3 py-2 border border-white/5 rounded-lg bg-white/[0.01] text-[10px] text-dark-300 hover:border-ice/10 hover:text-white/80 transition-all duration-400" style="font-family:'JetBrains Mono',monospace"><span class="w-1 h-1 rounded-full bg-ice/40 shrink-0"></span>DeepSeek</div>
+          <div class="flex items-center gap-2 px-3 py-2 border border-white/5 rounded-lg bg-white/[0.01] text-[10px] text-dark-300 hover:border-ice/10 hover:text-white/80 transition-all duration-400" style="font-family:'JetBrains Mono',monospace"><span class="w-1 h-1 rounded-full bg-ice/40 shrink-0"></span>Gemini</div>
+          <div class="flex items-center gap-2 px-3 py-2 border border-white/5 rounded-lg bg-white/[0.01] text-[10px] text-dark-300 hover:border-ice/10 hover:text-white/80 transition-all duration-400" style="font-family:'JetBrains Mono',monospace"><span class="w-1 h-1 rounded-full bg-ice/40 shrink-0"></span>Claude</div>
+          <div class="flex items-center gap-2 px-3 py-2 border border-white/5 rounded-lg bg-white/[0.01] text-[10px] text-dark-300 hover:border-ice/10 hover:text-white/80 transition-all duration-400" style="font-family:'JetBrains Mono',monospace"><span class="w-1 h-1 rounded-full bg-ice/40 shrink-0"></span>Codex</div>
+          <div class="flex items-center gap-2 px-3 py-2 border border-white/5 rounded-lg bg-white/[0.01] text-[10px] text-dark-300 hover:border-ice/10 hover:text-white/80 transition-all duration-400" style="font-family:'JetBrains Mono',monospace"><span class="w-1 h-1 rounded-full bg-ice/40 shrink-0"></span>Obsidian</div>
+          <div class="flex items-center gap-2 px-3 py-2 border border-white/5 rounded-lg bg-white/[0.01] text-[10px] text-dark-300 hover:border-ice/10 hover:text-white/80 transition-all duration-400" style="font-family:'JetBrains Mono',monospace"><span class="w-1 h-1 rounded-full bg-ice/40 shrink-0"></span>n8n</div>
+          <div class="flex items-center gap-2 px-3 py-2 border border-white/5 rounded-lg bg-white/[0.01] text-[10px] text-dark-300 hover:border-ice/10 hover:text-white/80 transition-all duration-400" style="font-family:'JetBrains Mono',monospace"><span class="w-1 h-1 rounded-full bg-ice/40 shrink-0"></span>React</div>
+          <div class="flex items-center gap-2 px-3 py-2 border border-white/5 rounded-lg bg-white/[0.01] text-[10px] text-dark-300 hover:border-ice/10 hover:text-white/80 transition-all duration-400" style="font-family:'JetBrains Mono',monospace"><span class="w-1 h-1 rounded-full bg-ice/40 shrink-0"></span>Tailwind</div>
+          <div class="flex items-center gap-2 px-3 py-2 border border-white/5 rounded-lg bg-white/[0.01] text-[10px] text-dark-300 hover:border-ice/10 hover:text-white/80 transition-all duration-400" style="font-family:'JetBrains Mono',monospace"><span class="w-1 h-1 rounded-full bg-ice/40 shrink-0"></span>Python</div>
+          <div class="flex items-center gap-2 px-3 py-2 border border-white/5 rounded-lg bg-white/[0.01] text-[10px] text-dark-300 hover:border-ice/10 hover:text-white/80 transition-all duration-400" style="font-family:'JetBrains Mono',monospace"><span class="w-1 h-1 rounded-full bg-ice/40 shrink-0"></span>GSAP</div>
+          <div class="flex items-center gap-2 px-3 py-2 border border-white/5 rounded-lg bg-white/[0.01] text-[10px] text-dark-300 hover:border-ice/10 hover:text-white/80 transition-all duration-400" style="font-family:'JetBrains Mono',monospace"><span class="w-1 h-1 rounded-full bg-ice/40 shrink-0"></span>SQL</div>
         </div>
       </div>
 
       <!-- Timeline -->
-      <div>
-        <h3 class="text-xs font-semibold text-white mb-5 tracking-wide">History</h3>
+      <div class="reveal-up">
+        <h3 class="text-xs font-semibold text-white mb-6 tracking-wide" style="font-family:'JetBrains Mono',monospace">History</h3>
         <div class="flex flex-col">
           <div class="flex gap-3 ti">
             <div class="flex flex-col items-center pt-0.5"><div class="t-dot"></div><div class="t-line"></div></div>
-            <div class="pb-5">
-              <span class="text-[8px] text-ice/40 tracking-[0.2em] uppercase">Dec 2024 — Present</span>
-              <h4 class="text-xs font-bold text-white mt-0.5">Senior Tourism Operations Officer</h4>
-              <p class="text-[10px] text-dark-500">DOT Region V — Product &amp; Market Development Head</p>
+            <div class="pb-6">
+              <span class="text-[8px] text-ice/40 tracking-[0.2em] uppercase" style="font-family:'JetBrains Mono',monospace">Dec 2024 &mdash; Present</span>
+              <h4 class="text-xs font-bold text-white mt-0.5 font-display">Senior Tourism Operations Officer</h4>
+              <p class="text-[10px] text-dark-500">DOT Region V &mdash; Product &amp; Market Development Head</p>
               <p class="text-[10px] text-dark-400 mt-0.5">ICT Focal, DPO, Database Modernization Lead, 5-person unit</p>
             </div>
           </div>
           <div class="flex gap-3 ti">
             <div class="flex flex-col items-center pt-0.5"><div class="t-dot"></div><div class="t-line"></div></div>
-            <div class="pb-5">
-              <span class="text-[8px] text-ice/40 tracking-[0.2em] uppercase">Jan 2019 — Dec 2024</span>
-              <h4 class="text-xs font-bold text-white mt-0.5">Tourism Operations Officer</h4>
-              <p class="text-[10px] text-dark-500">DOT Region V — Product &amp; Market Development</p>
-              <p class="text-[10px] text-dark-400 mt-0.5">Created Exciting Bicol — TPB Best Regional Tourism Brand</p>
+            <div class="pb-6">
+              <span class="text-[8px] text-ice/40 tracking-[0.2em] uppercase" style="font-family:'JetBrains Mono',monospace">Jan 2019 &mdash; Dec 2024</span>
+              <h4 class="text-xs font-bold text-white mt-0.5 font-display">Tourism Operations Officer</h4>
+              <p class="text-[10px] text-dark-500">DOT Region V &mdash; Product &amp; Market Development</p>
+              <p class="text-[10px] text-dark-400 mt-0.5">Created Exciting Bicol &mdash; TPB Best Regional Tourism Brand</p>
             </div>
           </div>
           <div class="flex gap-3 ti">
             <div class="flex flex-col items-center pt-0.5"><div class="t-dot"></div><div class="t-line"></div></div>
-            <div class="pb-5">
-              <span class="text-[8px] text-ice/40 tracking-[0.2em] uppercase">Nov 2014 — Jan 2019</span>
-              <h4 class="text-xs font-bold text-white mt-0.5">Administrative Aide IV</h4>
-              <p class="text-[10px] text-dark-500">DOT Region V — ICT, Design &amp; Operations</p>
+            <div class="pb-6">
+              <span class="text-[8px] text-ice/40 tracking-[0.2em] uppercase" style="font-family:'JetBrains Mono',monospace">Nov 2014 &mdash; Jan 2019</span>
+              <h4 class="text-xs font-bold text-white mt-0.5 font-display">Administrative Aide IV</h4>
+              <p class="text-[10px] text-dark-500">DOT Region V &mdash; ICT, Design &amp; Operations</p>
               <p class="text-[10px] text-dark-400 mt-0.5">Web dev, database admin, graphic design, event support</p>
             </div>
           </div>
           <div class="flex gap-3 ti">
             <div class="flex flex-col items-center pt-0.5"><div class="t-dot"></div></div>
             <div>
-              <span class="text-[8px] text-ice/40 tracking-[0.2em] uppercase">2024 — Present</span>
-              <h4 class="text-xs font-bold text-white mt-0.5">AI Automation Builder</h4>
+              <span class="text-[8px] text-ice/40 tracking-[0.2em] uppercase" style="font-family:'JetBrains Mono',monospace">2024 &mdash; Present</span>
+              <h4 class="text-xs font-bold text-white mt-0.5 font-display">AI Automation Builder</h4>
               <p class="text-[10px] text-dark-500">Hermes / KFX / JosephOS</p>
               <p class="text-[10px] text-dark-400 mt-0.5">Practical AI workflows for business ops, productivity, career, health</p>
             </div>
@@ -629,41 +759,41 @@ body{
 </section>
 
 <!-- ═══ CREDENTIALS ═══ -->
-<section class="py-16 px-4" aria-label="Credentials">
-  <div class="max-w-4xl mx-auto">
-    <span class="sec-num mb-5 block"><span class="text-dark-400">#06</span> Credentials</span>
-    <div class="grid sm:grid-cols-3 gap-2.5">
-      <div class="bezel p-5">
-        <span class="text-[11px] font-semibold text-ice">BS Comp. Engineering</span>
-        <p class="text-[10px] text-dark-500 mt-1.5">AMA Computer University · 2009–2015</p>
-        <p class="text-[10px] text-dark-400 mt-1">Systems design, programming foundations</p>
-      </div>
-      <div class="bezel p-5">
-        <span class="text-[11px] font-semibold text-ice">Career Service Professional</span>
-        <p class="text-[10px] text-dark-500 mt-1.5">Civil Service Commission · 81.74% (2013)</p>
-        <p class="text-[10px] text-dark-400 mt-1">Philippine civil service eligibility</p>
-      </div>
-      <div class="bezel p-5">
-        <span class="text-[11px] font-semibold text-ice">Google PM Certificate</span>
-        <p class="text-[10px] text-dark-500 mt-1.5">DICT Scholarship · 2023</p>
-        <p class="text-[10px] text-dark-400 mt-1">Project management, agile, stakeholder coordination</p>
-      </div>
+<section class="py-28 px-4" aria-label="Credentials">
+  <div class="max-w-5xl mx-auto">
+    <span class="sec-eyebrow mb-6">Credentials</span>
+    <div class="grid sm:grid-cols-3 gap-3 mt-2">
+      <div class="bezel-outer"><div class="bezel-inner p-5">
+        <span class="text-[11px] font-semibold text-ice" style="font-family:'JetBrains Mono',monospace">BS Comp. Engineering</span>
+        <p class="text-[10px] text-dark-500 mt-1.5">AMA Computer University &middot; 2009&ndash;2015</p>
+        <p class="text-[10px] text-dark-400 mt-1 leading-relaxed">Systems design, programming foundations</p>
+      </div></div>
+      <div class="bezel-outer"><div class="bezel-inner p-5">
+        <span class="text-[11px] font-semibold text-ice" style="font-family:'JetBrains Mono',monospace">Career Service Professional</span>
+        <p class="text-[10px] text-dark-500 mt-1.5">Civil Service Commission &middot; 81.74% (2013)</p>
+        <p class="text-[10px] text-dark-400 mt-1 leading-relaxed">Philippine civil service eligibility</p>
+      </div></div>
+      <div class="bezel-outer"><div class="bezel-inner p-5">
+        <span class="text-[11px] font-semibold text-ice" style="font-family:'JetBrains Mono',monospace">Google PM Certificate</span>
+        <p class="text-[10px] text-dark-500 mt-1.5">DICT Scholarship &middot; 2023</p>
+        <p class="text-[10px] text-dark-400 mt-1 leading-relaxed">Project management, agile, stakeholder coordination</p>
+      </div></div>
     </div>
   </div>
 </section>
 
 <!-- ═══ CONTACT ═══ -->
-<section id="contact" class="py-24 px-4" aria-label="Contact">
+<section id="contact" class="py-36 px-4" aria-label="Contact">
   <div class="max-w-3xl mx-auto text-center">
-    <span class="sec-num justify-center mb-5"><span class="text-dark-400">#07</span> Contact</span>
+    <span class="sec-eyebrow justify-center mb-6">Contact</span>
 
-    <h2 class="text-lg font-bold text-white mt-2 mb-3">Let's build something autonomous</h2>
-    <p class="text-xs text-dark-400 mb-8 max-w-sm mx-auto leading-relaxed">
-      Open to remote AI engineering roles and automation consulting.<br />
-      Legazpi City · UTC+8 · Remote only
+    <h2 class="text-2xl md:text-3xl font-bold text-white mt-2 mb-3 font-display">Available for remote AI roles</h2>
+    <p class="text-sm text-dark-400 mb-10 max-w-sm mx-auto leading-relaxed">
+      Open to full-time AI engineering and automation consulting.<br />
+      <span style="font-family:'JetBrains Mono',monospace" class="text-xs">Legazpi City &middot; UTC+8 &middot; Remote only</span>
     </p>
 
-    <div class="flex flex-wrap justify-center gap-3">
+    <div class="flex flex-wrap justify-center gap-4">
       <a href="mailto:josephtrilles@gmail.com" class="btn-ice" aria-label="Email Joseph">
         <span>MAIL</span>
         <span class="ic-w" aria-hidden="true">→</span>
@@ -676,12 +806,12 @@ body{
 
 </main>
 
-<footer class="py-4 px-4 border-t border-[#151515]" role="contentinfo">
-  <div class="max-w-4xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-1 text-[9px] text-dark-500">
-    <span>© 2026 Joseph Trilles. Built with LOKI.</span>
+<footer class="py-5 px-4 border-t border-dark-700" role="contentinfo">
+  <div class="max-w-5xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-1 text-[9px] text-dark-500" style="font-family:'JetBrains Mono',monospace">
+    <span>&copy; 2026 Joseph Trilles. Built with LOKI.</span>
     <span class="flex items-center gap-1">
       <span class="w-1.5 h-1.5 rounded-full bg-ice/30 animate-pulse-soft"></span>
-      $ echo $LOCATION → Legazpi City, PH
+      $ echo $LOCATION &rarr; Legazpi City, PH
     </span>
   </div>
 </footer>
@@ -694,19 +824,20 @@ gsap.registerPlugin(ScrollTrigger);
 const rm = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 const d = rm ? 0.01 : null;
 const y = rm ? 0 : null;
+const cb = 'power3.out';
 
-// Hero reveal
-gsap.from('.rs', { y: y || 22, opacity: 0, duration: d || 0.55, stagger: 0.08, ease: 'power3.out' });
+// Hero stagger
+gsap.from('.rs', { y: y || 28, opacity: 0, duration: d || 0.65, stagger: 0.09, ease: cb });
 
 // Stat counters
 document.querySelectorAll('.sc').forEach(c => {
   const el = c.querySelector('.stat-n');
   const t = parseInt(el.dataset.t);
   ScrollTrigger.create({
-    trigger: c, start: 'top 90%', once: true,
+    trigger: c, start: 'top 92%', once: true,
     onEnter: () => {
       gsap.to(el, {
-        innerText: t, duration: d || 1.5, ease: 'power2.out',
+        innerText: t, duration: d || 1.6, ease: 'power2.out',
         snap: { innerText: 1 },
         onUpdate: () => { el.innerText = Math.round(parseFloat(el.innerText)); }
       });
@@ -714,74 +845,91 @@ document.querySelectorAll('.sc').forEach(c => {
   });
 });
 
+// Reveal-up elements
+gsap.from('.reveal-up', {
+  y: y || 24, opacity: 0, duration: d || 0.6, ease: cb, stagger: 0.07,
+  scrollTrigger: { trigger: '#work', start: 'top 80%' }
+});
+
 // Skill bars
 document.querySelectorAll('.skill-fill').forEach(b => {
   const w = b.dataset.w || 0;
   ScrollTrigger.create({
-    trigger: b.closest('.sg'), start: 'top 88%', once: true,
-    onEnter: () => { gsap.to(b, { width: w + '%', duration: d || 1.2, ease: 'power2.out' }); }
+    trigger: b.closest('.sg'), start: 'top 90%', once: true,
+    onEnter: () => { gsap.to(b, { width: w + '%', duration: d || 1.3, ease: 'power2.out' }); }
   });
 });
 
-// Tech grid
+// Tech grid stagger
 gsap.from('.tg > div', {
-  y: y || 10, opacity: 0, duration: d || 0.3, stagger: 0.02,
-  scrollTrigger: { trigger: '.tg', start: 'top 88%' }
+  y: y || 10, opacity: 0, duration: d || 0.3, stagger: 0.025,
+  scrollTrigger: { trigger: '.tg', start: 'top 90%' }
 });
 
-// Project cards
-gsap.from('[data-proj]', {
-  y: y || 14, opacity: 0, duration: d || 0.4, ease: 'power3.out', stagger: 0.04,
+// Project cards stagger
+gsap.from('.pro-card', {
+  y: y || 20, opacity: 0, duration: d || 0.5, ease: cb, stagger: 0.05,
   scrollTrigger: { trigger: '#projects', start: 'top 80%' }
 });
 
-// Philosophy scrub text
+// SCRUB TEXT — word-by-word opacity reveal
 const st = document.querySelector('.scrub-target');
 if (st && !rm) {
-  const wds = st.textContent.split(' ');
+  const words = st.textContent.split(' ');
   st.innerHTML = '';
-  wds.forEach((w, i) => {
+  words.forEach((w, i) => {
     const s = document.createElement('span');
-    s.className = 'sw'; s.textContent = w;
+    s.className = 'scrub-w'; s.textContent = w;
     st.appendChild(s);
   });
-  const sa = st.querySelectorAll('.sw');
+  const sp = st.querySelectorAll('.scrub-w');
   ScrollTrigger.create({
-    trigger: st, start: 'top 70%', end: 'bottom 30%', scrub: 1.5,
+    trigger: st, start: 'top 75%', end: 'bottom 25%', scrub: 1.5,
     onUpdate: self => {
-      sa.forEach((sw, i) => {
-        const p = Math.min(1, Math.max(0.08, (self.progress - i / sa.length) / 0.3));
+      sp.forEach((sw, i) => {
+        const p = Math.min(1, Math.max(0.06, (self.progress - i / sp.length) / 0.25));
         sw.style.opacity = p;
       });
     }
   });
 }
 
-// Timeline
+// Timeline stagger
 gsap.from('.ti', {
-  y: y || 12, opacity: 0, duration: d || 0.4, ease: 'power3.out', stagger: 0.07,
-  scrollTrigger: { trigger: '.ti', start: 'top 85%' }
+  y: y || 14, opacity: 0, duration: d || 0.4, ease: cb, stagger: 0.08,
+  scrollTrigger: { trigger: '.ti', start: 'top 88%' }
 });
 
 // Nav highlight
 const secs = document.querySelectorAll('section[id]');
 const nls = document.querySelectorAll('.nav-link');
-new IntersectionObserver(entries => {
-  entries.forEach(e => {
-    if (e.isIntersecting) {
-      nls.forEach(l => { l.style.color = '#787878'; l.style.background = 'transparent'; });
-      const a = document.querySelector(`.nav-link[data-s="${e.target.id}"]`);
-      if (a) { a.style.color = '#7dd3fc'; a.style.background = 'rgba(125,211,252,0.05)'; }
-    }
-  });
-}, { threshold: 0.3, rootMargin: '-80px 0px 0px 0px' }).observe(secs[0]); secs.forEach(s => obs.observe(s));
+if (secs.length) {
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        nls.forEach(l => { l.classList.remove('active'); });
+        const a = document.querySelector(`.nav-link[data-s="${e.target.id}"]`);
+        if (a) a.classList.add('active');
+      }
+    });
+  }, { threshold: 0.3, rootMargin: '-80px 0px 0px 0px' });
+  secs.forEach(s => obs.observe(s));
+}
 
-// Screenshot hover
+// Magnetic hover on screenshot tiles
 document.querySelectorAll('.sshot').forEach(s => {
-  s.style.cursor = 'default';
+  s.addEventListener('mousemove', e => {
+    const r = s.getBoundingClientRect();
+    const x = (e.clientX - r.left) / r.width - 0.5;
+    const y2 = (e.clientY - r.top) / r.height - 0.5;
+    s.style.transform = `scale(1.012) translate(${x*2}px, ${y2*2}px)`;
+  });
+  s.addEventListener('mouseleave', () => {
+    s.style.transform = 'scale(1) translate(0,0)';
+  });
 });
 
-console.log('⚡ LOKI — Portfolio v5. Editorial-refined.');
+console.log('⚡ LOKI — Portfolio. Design system: Satoshi + JetBrains Mono, Double-Bezel, Asymmetric AIDA.');
 </script>
 </body>
 </html>
